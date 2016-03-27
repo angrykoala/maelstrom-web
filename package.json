@@ -1,0 +1,22 @@
+{
+  "name": "maelstrom-web",
+  "version": "0.1.0",
+  "description": "Web client for Maelström",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demiurgosoft/maelstrom-web.git"
+  },
+  "author": "demiurgosoft <demiurgosoft@hotmail.com>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/demiurgosoft/maelstrom-web/issues"
+  },
+  "homepage": "https://github.com/demiurgosoft/maelstrom-web#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
