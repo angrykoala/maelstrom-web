@@ -17,6 +17,5 @@ app.use(express.static('./public'));
 
 // Creación del servidor
 server = app.listen(9090,"localhost", function() {
-	console.log('Express server listening');
+	console.log('Express server listening on 9090');
 });
-
