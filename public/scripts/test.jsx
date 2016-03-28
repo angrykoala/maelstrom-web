@@ -14,7 +14,7 @@ var Map=React.createClass({
   loadMap: function() {
     $.ajax({
       url: this.props.url,
-      dataType: 'jsonp',
+      dataType: 'json',
       cache: false,
       success: function(data) {
         this.setState({data: data});
@@ -26,13 +26,12 @@ var Map=React.createClass({
   },
    componentDidMount: function() {
     this.loadMap();
-    setInterval(this.loadMap, this.props.pollInterval);
   },
 	render: function(){
 		return (
 		<div>
       		<p>
-        		 {this.state.data.toString}
+        		 {this.state.data}
 		    </p>
       </div>
     );
@@ -40,6 +39,9 @@ var Map=React.createClass({
 });
 
 ReactDOM.render(
-  <Map url="http://localhost:8080/map" pollInterval={2000}/>,
+    <div>
+        <Title />
+        <Map url="http://localhost:8080/map"/>
+    </div>,
   document.getElementById('content')
 );
