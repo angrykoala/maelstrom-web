@@ -43,8 +43,8 @@ var Selection=React.createClass({
    return(
        <form role="form">
        <div className="form-group">
-           <label htmlFor={this.props.title+"sel"}>{this.props.title}</label>
-           <select className="form-control" id={this.props.title+"sel"} onChange={this.onSelectionWrapper}>
+           <select className="form-control" id={this.props.title+"sel"} onChange={this.onSelectionWrapper} title={this.props.title}>
+               <option disabled selected value> {this.props.title} </option>
                {elements}
         </select>
     </div>
@@ -85,7 +85,18 @@ var MapDropdown=React.createClass({
     render: function(){
 		return (
          <Dropdown elements={this.state.map} title="Map" onSelection={this.onSelection}/> 
-    );
+        );
+    }
+});
+var MapSelection=React.createClass({
+    mixins: [MapLoad],
+    onSelection: function(selec){
+        console.log(selec);
+    },
+    render: function(){
+        return (
+         <Selection elements={this.state.map} title="Map" onSelection={this.onSelection}/> 
+        );
     }
 });
 
@@ -95,7 +106,7 @@ function onselec(selec){
 ReactDOM.render(
     <div>
   <MapDropdown url="http://localhost:8080/map"/>
-  <Selection title="Test" elements={["elem1","elem2"]} onSelection={onselec} />
+  <MapSelection url="http://localhost:8080/map"/>
   </div>,
   document.getElementById('content')
 );
