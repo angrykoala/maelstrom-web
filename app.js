@@ -9,10 +9,16 @@ Description: Maelström web client
 var express = require('express');
 var app = express();
 
+var urls=require('./config/urls');
+
 app.set('view engine', 'ejs');
 
 app.get('/', function(req,res){
-	res.render('index');
+	res.render('index',urls);
+});
+app.get('/signup', function(req,res){
+	res.render('signup',urls);
+	
 });
 
 app.use(express.static('./public'));

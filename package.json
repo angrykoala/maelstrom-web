@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build_react": "browserify -t [ babelify --presets [ react ] ] src/view.jsx -o public/scripts/builds/bundle.js"
+    "build_react": "browserify -t [ babelify --presets [ react ] ] src/components/*.jsx -o public/scripts/builds/components.js"
   },
   "repository": {
     "type": "git",

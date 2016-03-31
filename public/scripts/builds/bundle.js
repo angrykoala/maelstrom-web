@@ -19088,18 +19088,6 @@ var Map = require('./components/map.jsx');
 
 //var Button = require('react-bootstrap/lib/Button');
 
-ReactDOM.render(React.createElement(
-    'div',
-    null,
-    React.createElement(
-        'h1',
-        null,
-        'Test'
-    ),
-    React.createElement(Map.Dropdown, { url: 'http://localhost:8080/map' }),
-    React.createElement(Map.Selection, { url: 'http://localhost:8080/map' })
-), document.getElementById('content'));
-
 },{"./components/map.jsx":158,"react":157,"react-dom":1}],161:[function(require,module,exports){
 // shim for using process in browser
 

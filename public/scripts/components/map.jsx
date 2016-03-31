@@ -25,7 +25,7 @@ var MapLoad = {
     }
 };
 
-var MapComponent = {
+module.exports = {
     Dropdown: React.createClass({
         mixins: [MapLoad],
         onSelection: function(selec) {
@@ -45,6 +45,3 @@ var MapComponent = {
         }
     })
 }
-
-module.exports=MapComponent;
-window.Map=MapComponent;
