@@ -9,8 +9,10 @@ Description: Maelström web client
 var express = require('express');
 var app = express();
 
+app.set('view engine', 'ejs');
+
 app.get('/', function(req,res){
-	res.redirect('/index.html');
+	res.render('index');
 });
 
 app.use(express.static('./public'));

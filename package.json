@@ -4,7 +4,8 @@
   "description": "Web client for Maelström",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build_react": "browserify -t [ babelify --presets [ react ] ] src/view.jsx -o public/scripts/builds/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,12 @@
   },
   "homepage": "https://github.com/demiurgosoft/maelstrom-web#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.2.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "react": "^0.14.8",
+    "react-bootstrap": "^0.28.4",
+    "react-dom": "^0.14.8"
   }
 }
