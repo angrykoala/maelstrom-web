@@ -23,7 +23,6 @@ $(document).ready(function() {
 
 
 function getDash(token) {
-    console.log("GET DASH");
     $.ajax({
         url: "http://localhost:8081/restricted/dash",
         type: "GET",
