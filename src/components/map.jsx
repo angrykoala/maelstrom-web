@@ -1,14 +1,14 @@
-var Utils=require('./utils.jsx');
-var Dropdown=Utils.Dropdown;
-var Selection=Utils.Selection;
-
+var Utils = require('./utils.jsx');
+var Api=require('./api.js');
+var Dropdown = Utils.Dropdown;
+var Selection = Utils.Selection;
 
 var MapLoad = {
     getInitialState: function() {
         return {map: []};
     },
     loadMap: function() {
-        $.ajax({
+        /*$.ajax({
             url: this.props.url,
             dataType: 'json',
             cache: false,
@@ -18,8 +18,13 @@ var MapLoad = {
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
-        });
-    },
+        });*/
+        Api.get(this.props.url,this.setMap);
+        },
+        setMap: function(err,data){
+            if(err) console.log(err);
+            else this.setState({map:data});
+        },
     componentDidMount: function() {
         this.loadMap();
     }
@@ -46,5 +51,5 @@ var MapComponent = {
     })
 }
 
-module.exports=MapComponent;
-window.Map=MapComponent;
+module.exports = MapComponent;
+window.Map = MapComponent;

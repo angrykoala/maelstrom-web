@@ -1,6 +1,5 @@
-//TODO: check email and password
 $(document).ready(function() {
-    $('#signup-form').submit(function(e) {
+    $('#login-form').submit(function(e) {
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
         $.ajax({
@@ -17,23 +16,5 @@ $(document).ready(function() {
             }
         });
         e.preventDefault(); //STOP default action
-    });    
-});
-
-function getDash(token) {
-    $.ajax({
-        url: "http://localhost:8081/restricted/dash",
-        type: "GET",
-        headers: {
-            'Authorization': 'Bearer ' + token
-        },
-        success: function(data, status) {
-            return console.log("The returned data", data);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(JSON.stringify(jqXHR));
-            console.log(errorThrown);
-        }
     });
-
-}
+});

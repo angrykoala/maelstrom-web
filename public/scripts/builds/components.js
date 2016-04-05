@@ -1,5 +1,41 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+module.exports = {
+    //url:"127.0.0.1",
+    //port:"8080",
+    get: function (dir, done) {
+        $.ajax({
+            url: dir,
+            type: "GET",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                done(null, data);
+            } /*.bind(this)*/
+            , error: function (xhr, status, err) {
+                done(err);
+            } //.bind(this)
+        });
+    },
+    post: function (dir, data, done) {
+        $.ajax({
+            url: dir,
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            cache: false,
+            success: function (data) {
+                done(null, data);
+            } /*.bind(this)*/
+            , error: function (xhr, status, err) {
+                done(err);
+            } //.bind(this)
+        });
+    }
+};
+
+},{}],2:[function(require,module,exports){
 var Utils = require('./utils.jsx');
+var Api = require('./api.js');
 var Dropdown = Utils.Dropdown;
 var Selection = Utils.Selection;
 
@@ -8,17 +44,21 @@ var MapLoad = {
         return { map: [] };
     },
     loadMap: function () {
-        $.ajax({
+        /*$.ajax({
             url: this.props.url,
             dataType: 'json',
             cache: false,
-            success: function (data) {
-                this.setState({ map: data });
+            success: function(data) {
+                this.setState({map: data});
             }.bind(this),
-            error: function (xhr, status, err) {
+            error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
-        });
+        });*/
+        Api.get(this.props.url, this.setMap);
+    },
+    setMap: function (err, data) {
+        if (err) console.log(err);else this.setState({ map: data });
     },
     componentDidMount: function () {
         this.loadMap();
@@ -53,7 +93,7 @@ var MapComponent = {
 module.exports = MapComponent;
 window.Map = MapComponent;
 
-},{"./utils.jsx":2}],2:[function(require,module,exports){
+},{"./api.js":1,"./utils.jsx":3}],3:[function(require,module,exports){
 module.exports = {
     Dropdown: React.createClass({
         displayName: "Dropdown",
@@ -136,4 +176,4 @@ module.exports = {
     })
 };
 
-},{}]},{},[1,2]);
+},{}]},{},[2,3]);
