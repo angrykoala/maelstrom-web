@@ -1,9 +1,13 @@
 //TODO: check email and password
 $(document).ready(function() {
     $('#signup-form').submit(function(e) {
+        e.preventDefault(); //STOP default action
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
-        $.ajax({
+        User.signup(postData,function(res){
+            console.log(res);
+        });
+    /*    $.ajax({
             url: formURL,
             type: "POST",
             data: postData,
@@ -15,8 +19,8 @@ $(document).ready(function() {
                 console.log(JSON.stringify(jqXHR));
                 console.log(errorThrown);
             }
-        });
-        e.preventDefault(); //STOP default action
+        });*/
+        
     });    
 });
 
