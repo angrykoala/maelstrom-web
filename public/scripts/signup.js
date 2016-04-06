@@ -5,22 +5,9 @@ $(document).ready(function() {
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
         User.signup(postData,function(res){
+            Nav.setUserButtons();
             console.log(res);
         });
-    /*    $.ajax({
-            url: formURL,
-            type: "POST",
-            data: postData,
-            dataType: 'json',
-            success: function(data, textStatus, jqXHR) {
-                console.log(data);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(JSON.stringify(jqXHR));
-                console.log(errorThrown);
-            }
-        });*/
-        
     });    
 });
 

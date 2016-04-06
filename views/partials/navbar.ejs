@@ -11,33 +11,24 @@
             <li>
                 <a href="#" onclick="return false">Page 1</a>
             </li>
-            <li>
-                <a href="#">Page 2</a>
-            </li>
-            <li>
-                <a href="#">Page 3</a>
-            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="#" data-toggle="popover" data-placement="bottom" title="Login" onclick="return false" data-content='<% include login%>'>
+                <a id="account-button" class="hidden" href="/dash">
+                    <span class="glyphicon glyphicon-user"></span>
+                    My Account</a>                
+            </li>
+            <li>
+                <a id="login-button" href="#" data-toggle="popover" class="hidden" data-placement="bottom" title="Login" onclick="return false" data-content='<% include login%>'>
                     <span class="glyphicon glyphicon-log-in"></span>
                     Login</a>
             </li>
             <li>
-                <a href="/signup">
+                <a id="signup-button" href="/signup" class="hidden">
                     <span class="glyphicon glyphicon-user"></span>
                     Sign Up</a>
             </li>
-
+            <script src="scripts/navbar.js"></script>
         </ul>
-        <script>
-            $(document).ready(function() {
-                $('[data-toggle="popover"]').popover({
-                    html: true,
-                    container: 'body'
-                });
-            });
-        </script>
     </div>
 </nav>
