@@ -21,8 +21,8 @@ User={
                 setToken(data.token);
                 done();
             },
-            error: function(data, textStatus, errorThrown) {
-                done(data);
+            error: function(res) {
+                done(res.responseJSON.error);
             }
         });
     },
