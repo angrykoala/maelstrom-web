@@ -6,25 +6,20 @@
 
     <body>
         <% include partials/navbar.ejs %>
-
         <div class="container text-center">
             <div class="row">
                 <% include partials/left_menu.ejs %>
                 <div class="col-sm-7">
-                    <div id="content"></div>
-                    <script type="text/babel">
-                        ReactDOM.render(
-                        <div>
-                            <h1>Test</h1>
-                            <Map.Dropdown url="<%= urls.world+'/map' %>"/>
-                            <Map.Selection url="<%= urls.world+'/map' %>"/>
-                        </div>, document.getElementById('content'));
-
-                    </script>
+                    <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active"><% include partials/home.ejs %></div>
+                    
+                    <div id="map" class="tab-pane fade"><% include partials/map.ejs %> </div>
+                    </div>
                 </div>
-                <% include partials/right_menu.ejs %>                
+                <% include partials/right_menu.ejs %>
             </div>
         </div>
+        <% include partials/footer.ejs %>
     </body>
 
 </html>

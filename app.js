@@ -14,11 +14,13 @@ var urls=require('./config/urls');
 app.set('view engine', 'ejs');
 
 app.get('/', function(req,res){
-	res.render('index',urls);
+	res.render('index',{urls:urls,tabs:true});
 });
 app.get('/signup', function(req,res){
-	res.render('signup',urls);
-	
+	res.render('signup',{urls:urls,tabs:false});
+});
+app.get('/account', function(req,res){
+	res.render('account',{urls:urls,tabs:false});
 });
 
 app.use(express.static('./public'));

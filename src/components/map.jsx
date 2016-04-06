@@ -8,17 +8,6 @@ var MapLoad = {
         return {map: []};
     },
     loadMap: function() {
-        /*$.ajax({
-            url: this.props.url,
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
-                this.setState({map: data});
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });*/
         Api.get(this.props.url,this.setMap);
         },
         setMap: function(err,data){

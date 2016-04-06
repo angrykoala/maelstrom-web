@@ -4,19 +4,21 @@
             <a href="/" class="navbar-brand">
                 <img src="/images/logo.png" width="27px"></a>
         </div>
-        <ul class="nav navbar-nav">
-            <li>
-                <a href="/">Home</a>
-            </li>
-            <li>
-                <a href="#" onclick="return false">Page 1</a>
-            </li>
-        </ul>
+        <% if(tabs===true) { %>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a id="home-tab" data-toggle="tab" href="/#home" aria-expanded="true">Home</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="/#map">Map</a>
+                </li>
+            </ul>
+        <% } %>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a id="account-button" class="hidden" href="/dash">
+                <a id="account-button" class="hidden" href="/account">
                     <span class="glyphicon glyphicon-user"></span>
-                    My Account</a>                
+                    My Account</a>
             </li>
             <li>
                 <a id="login-button" href="#" data-toggle="popover" class="hidden" data-placement="bottom" title="Login" onclick="return false" data-content='<% include login%>'>
