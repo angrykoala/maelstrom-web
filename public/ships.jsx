@@ -76,4 +76,4 @@ ReactDOM.render(
     <ShipList url="http://localhost:8080/user/ships"/>
 </div>, document.getElementById('shipcontent'));
 
-window.Map = ShipList;
+window.ShipList = ShipList;

@@ -22,6 +22,8 @@ User={
                 setToken(data.token);
                 Nav.setUserButtons();
                 Nav.setTabs();
+                console.log(JSON.stringify(ShipList));
+                ShipList.loadShips();
                 //TODO: check world login
                 done();
             },
@@ -43,6 +45,7 @@ User={
                 wsign();
                 Nav.setUserButtons();
                 Nav.setTabs();
+                ShipList.loadShips();
                 done();
             },
             error: function(res) {

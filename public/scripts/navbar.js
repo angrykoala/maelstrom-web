@@ -5,16 +5,22 @@ $(document).ready(function() {
     });
     Nav.setUserButtons();
     Nav.setTabs();
+    $('#logout-button').click(function(e){
+        e.preventDefault(); //STOP default action
+        User.logout();
+    });
 });
 
 Nav={
     setUserButtons: function() {
         if (User.logged()) {
             $('#account-button').removeClass('hidden');
+            $('#logout-button').removeClass('hidden');
             $('#login-button').addClass('hidden');
             $('#signup-button').addClass('hidden');
         } else {
             $('#account-button').addClass('hidden');
+            $('#logout-button').addClass('hidden');
             $('#login-button').removeClass('hidden');
             $('#signup-button').removeClass('hidden');
         }
