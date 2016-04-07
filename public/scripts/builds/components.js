@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = {
+var Api = {
     //url:"127.0.0.1",
     //port:"8080",
     get: function (dir, done) {
@@ -10,10 +10,10 @@ module.exports = {
             cache: false,
             success: function (data) {
                 done(null, data);
-            } /*.bind(this)*/
-            , error: function (xhr, status, err) {
+            },
+            error: function (xhr, status, err) {
                 done(err);
-            } //.bind(this)
+            }
         });
     },
     post: function (dir, data, done) {
@@ -25,13 +25,15 @@ module.exports = {
             cache: false,
             success: function (data) {
                 done(null, data);
-            } /*.bind(this)*/
-            , error: function (xhr, status, err) {
+            },
+            error: function (xhr, status, err) {
                 done(err);
-            } //.bind(this)
+            }
         });
     }
 };
+module.exports = Api;
+window.Map = Api;
 
 },{}],2:[function(require,module,exports){
 var Utils = require('./utils.jsx');
@@ -44,22 +46,12 @@ var MapLoad = {
         return { map: [] };
     },
     loadMap: function () {
-        /*$.ajax({
-            url: this.props.url,
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
-                this.setState({map: data});
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });*/
         Api.get(this.props.url, this.setMap);
     },
     setMap: function (err, data) {
         if (err) console.log(err);else this.setState({ map: data });
     },
+
     componentDidMount: function () {
         this.loadMap();
     }

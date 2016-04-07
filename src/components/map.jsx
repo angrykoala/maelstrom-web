@@ -1,5 +1,5 @@
 var Utils = require('./utils.jsx');
-var Api=require('./api.js');
+var Api = require('./api.js');
 var Dropdown = Utils.Dropdown;
 var Selection = Utils.Selection;
 
@@ -8,12 +8,15 @@ var MapLoad = {
         return {map: []};
     },
     loadMap: function() {
-        Api.get(this.props.url,this.setMap);
-        },
-        setMap: function(err,data){
-            if(err) console.log(err);
-            else this.setState({map:data});
-        },
+        Api.get(this.props.url, this.setMap);
+    },
+    setMap: function(err, data) {
+        if (err) 
+            console.log(err);
+        else 
+            this.setState({map: data});
+        }
+    ,
     componentDidMount: function() {
         this.loadMap();
     }
