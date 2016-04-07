@@ -4,6 +4,7 @@ $(document).ready(function() {
         container: 'body'
     });
     Nav.setUserButtons();
+    Nav.setTabs();
 });
 
 Nav={
@@ -18,5 +19,18 @@ Nav={
             $('#signup-button').removeClass('hidden');
         }
 
+    },
+    setTabs: function(){
+        if (User.logged()) {
+            $('#home-tab').removeClass('hidden');
+            $('#map-tab').removeClass('hidden');
+            $('#ships-tab').removeClass('hidden');
+        } else {
+            $('#home-tab').addClass('hidden');
+            $('#map-tab').addClass('hidden');
+            $('#ships-tab').addClass('hidden');
+            
+        }
+        
     }
-}
+};

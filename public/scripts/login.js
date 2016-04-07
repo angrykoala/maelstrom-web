@@ -4,7 +4,6 @@ $(document).ready(function() {
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
         User.login(postData,function(err){
-            Nav.setUserButtons();
             if(!err) $('#login-button').popover('hide');
             console.log(err);            
         });

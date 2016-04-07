@@ -5,7 +5,6 @@ $(document).ready(function() {
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
         User.signup(postData,function(res){
-            Nav.setUserButtons();
             console.log(res);
         });
     });    

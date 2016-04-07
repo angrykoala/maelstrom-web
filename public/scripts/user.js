@@ -20,6 +20,8 @@ User={
             dataType: 'json',
             success: function(data, textStatus, jqXHR) {
                 setToken(data.token);
+                Nav.setUserButtons();
+                Nav.setTabs();
                 //TODO: check world login
                 done();
             },
@@ -39,6 +41,8 @@ User={
             success: function(data, textStatus, jqXHR) {
                 setToken(data.token);
                 wsign();
+                Nav.setUserButtons();
+                Nav.setTabs();
                 done();
             },
             error: function(res) {
@@ -67,5 +71,7 @@ User={
     logout:function(){
         localStorage.removeItem("token");
         this.token=undefined;
+        Nav.setUserButtons();
+        Nav.setTabs();
     }
 };
