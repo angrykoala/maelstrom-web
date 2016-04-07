@@ -3,6 +3,7 @@ var ShipsLoad = {
         return {ships: []};
     },
     loadShips: function() {
+        if(User.logged()){
         var cb = this.setShips;
         var token = User.getToken();
         $.ajax({
@@ -17,9 +18,10 @@ var ShipsLoad = {
                 cb(null, data);
             },
             error: function(xhr, status, err) {
-                cb(err);
+                cb({error:err});
             }
         });
+    }
     },
     setShips: function(err, data) {
         if (err) 
@@ -76,4 +78,6 @@ ReactDOM.render(
     <ShipList url="http://localhost:8080/user/ships"/>
 </div>, document.getElementById('shipcontent'));
 
-window.ShipList = ShipList;
+window.Ships ={
+    list:ShipList
+};

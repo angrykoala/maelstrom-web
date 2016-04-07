@@ -4,8 +4,13 @@ $(document).ready(function() {
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
         User.login(postData,function(err){
-            if(!err) $('#login-button').popover('hide');
-            console.log(err);            
+            if(!err){
+                window.location.href='/';
+                $('#login-button').popover('hide');
+             }
+            else {
+                console.log(err);   
+            }         
         });
     });
 });
