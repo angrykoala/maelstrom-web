@@ -41,7 +41,7 @@ var ShipList = React.createClass({
         var elements = this.state.ships.map(function(elem) {
             return (
                 <div className="col-sm-6">
-                    <ShipDisplay name={elem.name} model={elem.model} life={elem.life}/>
+                    <ShipDisplay name={elem.name} model={elem.model} life={elem.life} id={elem.slug}/>
                 </div>
             );
         });
@@ -59,14 +59,15 @@ var ShipDisplay = React.createClass({
     propTypes: {
         name: React.PropTypes.string.isRequired,
         model: React.PropTypes.string.isRequired,
-        life: React.PropTypes.number.isRequired
+        life: React.PropTypes.number.isRequired 
+        //id required
     },
     handleClick: function(){
-        console.log("Click");
+        ModalShip.loadShip(this.props.id,this.props.name);
     },
     render: function() {
         return (
-            <button type="button" className="well btn-default" onClick={this.handleClick}>
+            <button type="button" className="well btn-default" data-toggle="modal" data-target="#ship-modal" onClick={this.handleClick}>
                 <h4>{this.props.name + " "}
                     <small>{this.props.model}</small>
                 </h4>

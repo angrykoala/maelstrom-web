@@ -34,6 +34,7 @@ var ShipLoad = {
     }/*,
     componentDidMount: function() {
         this.loadShip();
+<script src="modal.jsx"  type="text/babel"></script>
     }*/
 };
 
