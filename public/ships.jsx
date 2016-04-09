@@ -1,27 +1,27 @@
 var ShipsLoad = {
     getInitialState: function() {
-        return {ships: []};
+        return {ships: [],id:"",name:""};
     },
-    loadShips: function() {
-        if(User.logged()){
-        var cb = this.setShips;
-        var token = User.getToken();
-        $.ajax({
-            url: this.props.url,
-            type: "GET",
-            dataType: 'json',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
-            cache: false,
-            success: function(data) {
-                cb(null, data);
-            },
-            error: function(xhr, status, err) {
-                cb({error:err});
-            }
-        });
-    }
+    loadAllShips: function() {
+        if (User.logged()) {
+            var cb = this.setShips;
+            var token = User.getToken();
+            $.ajax({
+                url: this.props.url+"/user/ships",
+                type: "GET",
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                cache: false,
+                success: function(data) {
+                    cb(null, data);
+                },
+                error: function(xhr, status, err) {
+                    cb({error: err});
+                }
+            });
+        }
     },
     setShips: function(err, data) {
         if (err) 
@@ -31,25 +31,33 @@ var ShipsLoad = {
         }
     },
     componentDidMount: function() {
-        this.loadShips();
+        this.loadAllShips();
     }
 };
 
 var ShipList = React.createClass({
     mixins: [ShipsLoad],
+    setModal: function(id,name){
+        this.setState({id:id,name:name});
+    }, 
     render: function() {
+        var setModal=this.setModal;
         var elements = this.state.ships.map(function(elem) {
             return (
                 <div className="col-sm-6">
-                    <ShipDisplay name={elem.name} model={elem.model} life={elem.life} id={elem.slug}/>
+                    <ShipDisplay name={elem.name} model={elem.model} life={elem.life} id={elem.slug} onClick={setModal}/>
                 </div>
             );
         });
+        var url=this.props.url+"/user/ship";
         if (!elements || elements.length === 0) 
             elements = "No Ships";
         return (
+            <div>
             <div className="row">
                 {elements}
+            </div>
+            <ShipModal url={url} shipId={this.state.id}/>
             </div>
         );
     }
@@ -59,11 +67,13 @@ var ShipDisplay = React.createClass({
     propTypes: {
         name: React.PropTypes.string.isRequired,
         model: React.PropTypes.string.isRequired,
-        life: React.PropTypes.number.isRequired 
+        life: React.PropTypes.number.isRequired,
+        onClick: React.PropTypes.func.isRequired
         //id required
     },
-    handleClick: function(){
-        ModalShip.loadShip(this.props.id,this.props.name);
+    handleClick: function() {
+        this.props.onClick(this.props.id,this.props.name);
+        //ModalShip.loadShip(this.props.id, this.props.name);
     },
     render: function() {
         return (
@@ -79,9 +89,9 @@ var ShipDisplay = React.createClass({
 
 ReactDOM.render(
     <div>
-    <ShipList url="http://localhost:8080/user/ships"/>
+    <ShipList url="http://localhost:8080"/>
 </div>, document.getElementById('shipcontent'));
 
-window.Ships ={
-    list:ShipList
+window.Ships = {
+    list: ShipList
 };
