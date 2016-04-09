@@ -61,14 +61,17 @@ var ShipDisplay = React.createClass({
         model: React.PropTypes.string.isRequired,
         life: React.PropTypes.number.isRequired
     },
+    handleClick: function(){
+        console.log("Click");
+    },
     render: function() {
         return (
-            <div className="well">
+            <button type="button" className="well btn-default" onClick={this.handleClick}>
                 <h4>{this.props.name + " "}
                     <small>{this.props.model}</small>
                 </h4>
                 <p>Life: {this.props.life}</p>
-            </div>
+            </button>
         );
     }
 });

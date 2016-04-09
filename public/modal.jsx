@@ -1,5 +1,5 @@
 
-//button -> modal -> modal content
+//button -> modal -> modal cntent
 var ShipLoad = {
     getInitialState: function() {
         return {ship: {model:"",status:""}};
@@ -31,19 +31,21 @@ var ShipLoad = {
         else {
             this.setState({ship: data});
         }
-    },
+    }/*,
     componentDidMount: function() {
         this.loadShip();
-    }
+    }*/
 };
 
 var Modal = React.createClass({
     mixins: [ShipLoad],
+    click:function(){
+        this.loadShip();
+    },
     render: function() {
-        console.log(JSON.stringify(this.state.ship));
         return (
             <div>
-            <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+            <button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onClick={this.click}>Open Modal</button>
             <div className="modal fade" id="myModal" role="dialog">
               <div className="modal-dialog">
               
