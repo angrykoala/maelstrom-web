@@ -71,16 +71,15 @@ var Modal = React.createClass({
                                         <p>Cargo stuff here</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
-            ); 
+            </div>
+        ); 
     } 
 }); 
         
 window.ShipModal=Modal;
-        //ReactDOM.render(<Modal url="http://localhost:8080/user/ship" shipId="black-pearl"/>

@@ -11,6 +11,8 @@ var app = express();
 
 var urls=require('./config/urls');
 
+var version = process.env.npm_package_version;
+
 app.set('view engine', 'ejs');
 
 app.get('/', function(req,res){
@@ -25,7 +27,9 @@ app.get('/account', function(req,res){
 
 app.use(express.static('./public'));
 
-// Creación del servidor
+
+console.log("Maelström - Web");
+if (version) console.log("Version " + version);
 server = app.listen(9090,"localhost", function() {
-	console.log('Express server listening on 9090');
+	console.log("Server listening on port 9090");
 });
