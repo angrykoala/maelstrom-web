@@ -22,6 +22,7 @@ var ShipLoad = {
                 },
                 cache: false,
                 success: function(data) {
+                    console.log(data);
                     cb(null, data);
                 },
                 error: function(xhr, status, err) {
@@ -68,7 +69,7 @@ var Modal = React.createClass({
                                         <p>City: {this.state.ship.city}</p>
                                         <hr></hr>
                                         <h4>Cargo</h4>
-                                        <p>Cargo stuff here</p>
+                                        <Cargo.display name="test" quantity="100"/>
                                     </div>
                                 </div>
                         </div>

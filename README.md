@@ -14,4 +14,4 @@ Game server to handle maelstrom dynamic world and game logic
 
 
 > Licensed under GNU AFFERO GENERAL PUBLIC LICENSE Version 3
-> Maelström logo by @iblancasa under CC-by-sa
+> Maelström logo by @iblancasa under CmaeC-by-sa
