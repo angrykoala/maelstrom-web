@@ -15,9 +15,9 @@ var Cargo=React.createClass({
             <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Actions</th>
+                        <th className="text-center">Product</th>
+                        <th className="text-center">Quantity</th>
+                        <th className="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
