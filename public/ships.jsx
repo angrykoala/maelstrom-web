@@ -57,7 +57,7 @@ var ShipList = React.createClass({
             <div className="row">
                 {elements}
             </div>
-            <ShipModal url={url} shipId={this.state.id}/>
+            <ShipModal url={url} id={this.state.id} name={this.state.name}/>
             </div>
         );
     }

@@ -1,24 +1,56 @@
-//TODO: cargo List
+var Cargo=React.createClass({
+    propTypes:{
+        products: React.PropTypes.object.isRequired    
+    },
+    render: function(){
+
+        var elements = [];
+        for(var elem in this.props.products){
+            elements.push(
+                <ProductDisplay name={elem} quantity={this.props.products[elem]} />
+            )
+            
+        }
+        return (
+            <table className="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {elements}
+                </tbody>
+            </table>
+        );
+        
+        
+    }
+    
+    
+    
+});
 
 
 var ProductDisplay = React.createClass({
     propTypes: {
         name: React.PropTypes.string.isRequired,
-        quantity: React.PropTypes.string.isRequired,
+        quantity: React.PropTypes.number.isRequired,
     },
     render: function() {
         return (
-            <div className="panel panel-default">
-                <div className="panel-body">
-                    <ul className="list-group">
-                        <li className="list-group-item">{this.props.name} - {this.props.quantity}</li>
-                    </ul>
-                </div>
-            </div>
+            <tr>
+                <td>{this.props.name}</td>
+                <td>{this.props.quantity}</td>
+                <td>My Actions</td>
+            </tr>
         );
     }
 });
 
 window.Cargo = {
-    display: ProductDisplay
+    Display: Cargo,
+    Product: ProductDisplay
 };
