@@ -69,13 +69,34 @@ var ProductDisplay = React.createClass({
                     console.log("ERROR "+err);
                 }
             });
-        }
-        
-        
+        }    
     },
     sell: function(){
         var val=this.state.value || 0;
-        console.log("Sell "+val+" of "+this.props.name+" in "+this.props.shipId);
+        //console.log("Sell "+val+" of "+this.props.name+" in "+this.props.shipId);
+        if (User.logged() && val>0) {
+            var token = User.getToken();
+            $.ajax({
+                url: "http://localhost:8080/user/sell",
+                type: "POST",
+                dataType: 'json',
+                data:{
+                    ship:this.props.shipId,
+                    product: this.props.name,
+                    quantity: val
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                cache: false,
+                success: function(data) {
+                    console.log("SUCCESS "+data);
+                },
+                error: function(xhr, status, err) {
+                    console.log("ERROR "+err);
+                }
+            });
+        }
     },
     render: function() {
         return (
