@@ -23,7 +23,6 @@ var ShipLoad = {
                 },
                 cache: false,
                 success: function(data) {
-                    console.log(data);
                     cb(null, data);
                 },
                 error: function(xhr, status, err) {
@@ -52,6 +51,7 @@ var Modal = React.createClass({
         this.loadShip();
     },*/
     render: function() {
+        var shipId=this.props.id || "null";
         return (
             <div className="modal fade" id="ship-modal" role="dialog">
                 <div className="modal-dialog">
@@ -69,7 +69,7 @@ var Modal = React.createClass({
                                         <p>City: {this.state.ship.city}</p>
                                         <hr></hr>
                                         <h4>Cargo</h4>
-                                        <Cargo.Display products={this.state.ship.cargo}/>
+                                        <Cargo.Display products={this.state.ship.cargo} id={shipId}/>
                                 </div>
                         </div>
                         <div className="modal-footer">

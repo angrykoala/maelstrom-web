@@ -1,13 +1,13 @@
 var Cargo=React.createClass({
     propTypes:{
-        products: React.PropTypes.object.isRequired    
+        products: React.PropTypes.object.isRequired,
+        //id required
     },
     render: function(){
-
         var elements = [];
         for(var elem in this.props.products){
             elements.push(
-                <ProductDisplay name={elem} quantity={this.props.products[elem]} />
+                <ProductDisplay name={elem} quantity={this.props.products[elem]} shipId={this.props.id} />
             )
             
         }
@@ -24,13 +24,8 @@ var Cargo=React.createClass({
                     {elements}
                 </tbody>
             </table>
-        );
-        
-        
+        );        
     }
-    
-    
-    
 });
 
 
@@ -38,13 +33,39 @@ var ProductDisplay = React.createClass({
     propTypes: {
         name: React.PropTypes.string.isRequired,
         quantity: React.PropTypes.number.isRequired,
+        shipId: React.PropTypes.string.isRequired
+    },
+    getInitialState: function() {
+        return {value: null};
+    },
+    handleChange: function(event){
+        var val=event.target.value;
+        if(val<0) val=0;
+        
+        this.setState({value: val});
+    },
+    buy: function(){
+        var val=this.state.value || 0;
+        console.log("Buy "+val+" of "+this.props.name+" in "+this.props.shipId);
+    },
+    sell: function(){
+        var val=this.state.value || 0;
+        console.log("Sell "+val+" of "+this.props.name+" in "+this.props.shipId);
     },
     render: function() {
         return (
             <tr>
                 <td>{this.props.name}</td>
                 <td>{this.props.quantity}</td>
-                <td>My Actions</td>
+                <td>
+                    <form role="form">
+                        <input type="number" min="0" value={this.state.value} onChange={this.handleChange} className="form-control input-sm"></input>
+                    </form>                   
+                    <div className="btn-group">
+                        <button type="button" className="btn btn-default" onClick={this.buy}>Buy</button>
+                        <button type="button" className="btn btn-default" onClick={this.sell}>Sell</button>
+                    </div>
+                </td>
             </tr>
         );
     }
