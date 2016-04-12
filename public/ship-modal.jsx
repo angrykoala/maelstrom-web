@@ -67,6 +67,8 @@ var Modal = React.createClass({
                                         <p>Life: {this.state.ship.life}</p>
                                         <p>Status: {this.state.ship.status.value}</p>
                                         <p>City: {this.state.ship.city}</p>
+                                        <p>Move To</p>
+                                            <Map.Selection url="http://localhost:8080/map"/>
                                         <hr></hr>
                                         <h4>Cargo</h4>
                                         <Cargo.Display products={this.state.ship.cargo} id={shipId}/>
