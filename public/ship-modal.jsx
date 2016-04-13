@@ -50,6 +50,9 @@ var Modal = React.createClass({
     /*click: function() {
         this.loadShip();
     },*/
+    moveTo: function(selec){
+        console.log("Move "+this.props.id+" from "+this.state.ship.city+" to "+selec);
+    },
     render: function() {
         var shipId=this.props.id || "null";
         return (
@@ -68,7 +71,7 @@ var Modal = React.createClass({
                                         <p>Status: {this.state.ship.status.value}</p>
                                         <p>City: {this.state.ship.city}</p>
                                         <p>Move To</p>
-                                            <Map.Selection url="http://localhost:8080/map"/>
+                                            <Map.Selection url="http://localhost:8080/map" onSelection={this.moveTo}/>
                                         <hr></hr>
                                         <h4>Cargo</h4>
                                         <Cargo.Display products={this.state.ship.cargo} id={shipId}/>

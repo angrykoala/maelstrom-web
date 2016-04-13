@@ -62,22 +62,16 @@ var MapComponent = {
         displayName: 'Dropdown',
 
         mixins: [MapLoad],
-        onSelection: function (selec) {
-            console.log(selec);
-        },
         render: function () {
-            return React.createElement(Dropdown, { elements: this.state.map, title: 'Map', onSelection: this.onSelection });
+            return React.createElement(Dropdown, { elements: this.state.map, title: 'Map', onSelection: this.props.onSelection });
         }
     }),
     Selection: React.createClass({
         displayName: 'Selection',
 
         mixins: [MapLoad],
-        onSelection: function (selec) {
-            console.log(selec);
-        },
         render: function () {
-            return React.createElement(Selection, { elements: this.state.map, title: 'Map', onSelection: this.onSelection });
+            return React.createElement(Selection, { elements: this.state.map, title: 'Map', onSelection: this.props.onSelection });
         }
     })
 };
