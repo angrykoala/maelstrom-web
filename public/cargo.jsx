@@ -51,7 +51,7 @@ var ProductDisplay = React.createClass({
             var token = User.getToken();
             $.ajax({
                 url: "http://localhost:8080/user/buy",
-                type: "POST",
+                type: "PUT",
                 dataType: 'json',
                 data:{
                     ship:this.props.shipId,
@@ -67,6 +67,7 @@ var ProductDisplay = React.createClass({
                 },
                 error: function(xhr, status, err) {
                     console.log("ERROR "+err);
+                    console.log("  "+JSON.stringify(xhr));
                 }
             });
         }    
@@ -78,8 +79,8 @@ var ProductDisplay = React.createClass({
             var token = User.getToken();
             $.ajax({
                 url: "http://localhost:8080/user/sell",
-                type: "POST",
-                dataType: 'json',
+                type: "PUT",
+                dataType: 'application/json',
                 data:{
                     ship:this.props.shipId,
                     product: this.props.name,

@@ -8,7 +8,7 @@ socket.on('error',function(){
     console.log("Error");    
 });
 socket.on('money',function(msg){
-    console.log("Money "+msg);
+    $(".money_display").text(msg);
 });
 socket.on('ship_update',function(msg){
     console.log(msg);
