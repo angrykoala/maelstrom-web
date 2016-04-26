@@ -36,7 +36,7 @@ var ProductDisplay = React.createClass({
         shipId: React.PropTypes.string.isRequired
     },
     getInitialState: function() {
-        return {value: null};
+        return {value: null,quantity:this.props.quantity};
     },
     handleChange: function(event){
         var val=event.target.value;
@@ -45,7 +45,7 @@ var ProductDisplay = React.createClass({
         this.setState({value: val});
     },
     buy: function(){
-        var val=this.state.value || 0;
+        var val=parseInt(this.state.value) || 0;
         //console.log("Buy "+val+" of "+this.props.name+" in "+this.props.shipId);
         if (User.logged() && val>0) {
             var token = User.getToken();
@@ -63,24 +63,27 @@ var ProductDisplay = React.createClass({
                 },
                 cache: false,
                 success: function(data) {
-                    console.log("SUCCESS "+data);
-                },
+                    console.log("SUCCESS "+JSON.stringify(data));
+                    var q=this.state.quantity;
+                    this.setState({quantity:q+val});
+                }.bind(this),
                 error: function(xhr, status, err) {
                     console.log("ERROR "+err);
                     console.log("  "+JSON.stringify(xhr));
-                }
+                }.bind(this)
             });
         }    
     },
     sell: function(){
-        var val=this.state.value || 0;
+        var val=parseInt(this.state.value) || 0;
         //console.log("Sell "+val+" of "+this.props.name+" in "+this.props.shipId);
         if (User.logged() && val>0) {
             var token = User.getToken();
+
             $.ajax({
                 url: "http://localhost:8080/user/sell",
                 type: "PUT",
-                dataType: 'application/json',
+                dataType: 'json',
                 data:{
                     ship:this.props.shipId,
                     product: this.props.name,
@@ -91,11 +94,14 @@ var ProductDisplay = React.createClass({
                 },
                 cache: false,
                 success: function(data) {
-                    console.log("SUCCESS "+data);
-                },
+                    console.log("SUCCESS "+JSON.stringify(data));
+                    var q=this.state.quantity;
+                    this.setState({quantity:q-val});
+                }.bind(this),
                 error: function(xhr, status, err) {
                     console.log("ERROR "+err);
-                }
+                    console.log("  "+JSON.stringify(xhr));
+                }.bind(this)
             });
         }
     },
@@ -103,7 +109,7 @@ var ProductDisplay = React.createClass({
         return (
             <tr>
                 <td>{this.props.name}</td>
-                <td>{this.props.quantity}</td>
+                <td>{this.state.quantity}</td>
                 <td>
                     <form role="form">
                         <input type="number" min="0" value={this.state.value} onChange={this.handleChange} className="form-control input-sm"></input>
