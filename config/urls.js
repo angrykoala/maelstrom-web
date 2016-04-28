@@ -1,4 +1,4 @@
-module.exports={
-		world:"http://localhost:8080",
-		users:"http://localhost:8081"
+module.exports = {
+	world: "http://localhost:8080",
+	users: "http://localhost:8081"
 };

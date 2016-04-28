@@ -55,7 +55,53 @@ var Modal = React.createClass({
     },
     render: function() {
         var shipId=this.props.id || "null";
-        return (
+        
+        if(this.state.loaded) return (<div className="modal fade" id="ship-modal" role="dialog">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <button type="button" className="close" data-dismiss="modal">&times;</button>
+                        <h4 className="modal-title"><strong>{this.props.name}</strong></h4>
+                    </div>
+                    <div className="modal-body">
+                            <div id="ship-data">
+                                    <p>Type: {this.state.ship.model.name}</p>
+                                    <p>Life: {this.state.ship.life}</p>
+                                    <p>Status: {this.state.ship.status.value}</p>
+                                    <p>City: {this.state.ship.city}</p>
+                                    <p>Move To</p>
+                                        <Map.Selection url="http://localhost:8080/map" onSelection={this.moveTo}/>
+                                    <hr></hr>
+                                    <h4>Cargo</h4>
+                                    <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status.value} city={this.state.ship.city}/>
+                            </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>);
+        else return(
+            <div className="modal fade" id="ship-modal" role="dialog">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            <h4 className="modal-title"><strong>{this.props.name}</strong></h4>
+                        </div>
+                        <div className="modal-body">
+                            <img src="ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img"/>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        );
+    /*    return (
             <div className="modal fade" id="ship-modal" role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -74,7 +120,7 @@ var Modal = React.createClass({
                                             <Map.Selection url="http://localhost:8080/map" onSelection={this.moveTo}/>
                                         <hr></hr>
                                         <h4>Cargo</h4>
-                                        <Cargo.Display products={this.state.ship.cargo} id={shipId}/>
+                                        <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status} city={this.state.ship.city}/>
                                 </div>
                         </div>
                         <div className="modal-footer">
@@ -83,7 +129,7 @@ var Modal = React.createClass({
                     </div>
                 </div>
             </div>
-        ); 
+        ); */
     } 
 }); 
         
