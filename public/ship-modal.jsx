@@ -11,7 +11,7 @@ var ShipLoad = {
     },
     loadShip: function(shipId) {
         if (User.logged() && this.props.url && shipId) {
-            var cb = this.setShip;
+            //var cb = this.setShip;
             var token = User.getToken();
             $.ajax({
                 url: this.props.url + "/" + shipId,
@@ -22,11 +22,11 @@ var ShipLoad = {
                 },
                 cache: false,
                 success: function(data) {
-                    cb(null, data);
-                },
+                    this.setShip(null, data);
+                }.bind(this),
                 error: function(xhr, status, err) {
-                    cb({error: err});
-                }
+                    this.setShip({error: err});
+                }.bind(this)
             });
         }
     },
@@ -46,9 +46,6 @@ var ShipLoad = {
 
 var Modal = React.createClass({
     mixins: [ShipLoad],
-    /*click: function() {
-        this.loadShip();
-    },*/
     moveTo: function(selec) {
         console.log("Move " + this.props.id + " from " + this.state.ship.city + " to " + selec);
     },

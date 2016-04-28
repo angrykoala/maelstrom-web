@@ -5,14 +5,29 @@ var Cargo = React.createClass({
         status: React.PropTypes.string.isRequired,
         city: React.PropTypes.string.isRequired
     },
+    getInitialState: function(){
+        return {
+            products:[],
+            docked: (this.props.status == "docked")
+        }
+    },
+    getCityDetails: function(){
+        console.log("Get City Details");
+        //Update this.state.products Here
+        
+        
+    },
+    componentDidMount: function() {
+    if(this.state.docked) this.getCityDetails();
+  },
     render: function() {
         console.log(this.props.status);
         console.log(this.props.city);
-        var docked = (this.props.status == "docked");
+        
         var elements = [];
+        
         for (var elem in this.props.products) {
-            elements.push(<ProductDisplay name={elem} quantity={this.props.products[elem]} shipId={this.props.id} docked={docked}/>)
-
+            elements.push(<ProductDisplay name={elem} quantity={this.props.products[elem]} shipId={this.props.id} docked={this.state.docked}/>);
         }
         return (
             <table className="table table-hover">
