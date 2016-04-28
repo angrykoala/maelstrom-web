@@ -1,4 +1,3 @@
-
 var ShipLoad = {
     getInitialState: function() {
         return {
@@ -35,11 +34,11 @@ var ShipLoad = {
         if (err) 
             console.log(err);
         else {
-            this.setState({ship: data,loaded:true});
+            this.setState({ship: data, loaded: true});
         }
     },
     componentWillReceiveProps: function(props) {
-        this.setState({loaded:false});
+        this.setState({loaded: false});
         if (props.id) 
             this.loadShip(props.id);
         }
@@ -50,48 +49,41 @@ var Modal = React.createClass({
     /*click: function() {
         this.loadShip();
     },*/
-    moveTo: function(selec){
-        console.log("Move "+this.props.id+" from "+this.state.ship.city+" to "+selec);
+    moveTo: function(selec) {
+        console.log("Move " + this.props.id + " from " + this.state.ship.city + " to " + selec);
     },
     render: function() {
-        var shipId=this.props.id || "null";
-        
-        if(this.state.loaded) return (<div className="modal fade" id="ship-modal" role="dialog">
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal">&times;</button>
-                        <h4 className="modal-title"><strong>{this.props.name}</strong></h4>
-                    </div>
-                    <div className="modal-body">
-                            <div id="ship-data">
-                                    <p>Type: {this.state.ship.model.name}</p>
-                                    <p>Life: {this.state.ship.life}</p>
-                                    <p>Status: {this.state.ship.status.value}</p>
-                                    <p>City: {this.state.ship.city}</p>
-                                    <p>Move To</p>
-                                        <Map.Selection url="http://localhost:8080/map" onSelection={this.moveTo}/>
-                                    <hr></hr>
-                                    <h4>Cargo</h4>
-                                    <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status.value} city={this.state.ship.city}/>
-                            </div>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
+        var shipId = this.props.id || "null";
+        var bodyContent;
+        if (this.state.loaded) {
+            bodyContent = <div id="ship-data">
+                <p>Type: {this.state.ship.model.name}</p>
+                <p>Life: {this.state.ship.life}</p>
+                <p>Status: {this.state.ship.status.value}</p>
+                <p>City: {this.state.ship.city}</p>
+                <p>Move To</p>
+                <Map.Selection url="http://localhost:8080/map" onSelection={this.moveTo}/>
+                <hr></hr>
+                <h4>Cargo</h4>
+                <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status.value} city={this.state.ship.city}/>
             </div>
-        </div>);
-        else return(
+
+        } else {
+            bodyContent = <img src="ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img"/>
+        }
+
+        return (
             <div className="modal fade" id="ship-modal" role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            <h4 className="modal-title"><strong>{this.props.name}</strong></h4>
+                            <h4 className="modal-title">
+                                <strong>{this.props.name}</strong>
+                            </h4>
                         </div>
                         <div className="modal-body">
-                            <img src="ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img"/>
+                            {bodyContent}
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
@@ -99,38 +91,8 @@ var Modal = React.createClass({
                     </div>
                 </div>
             </div>
-            
         );
-    /*    return (
-            <div className="modal fade" id="ship-modal" role="dialog">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            <h4 className="modal-title"><strong>{this.props.name}</strong></h4>
-                        </div>
-                        <div className="modal-body">
-                            <img src="ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img" hidden={this.state.loaded}/>
-                                <div id="ship-data" hidden={!this.state.loaded}>
-                                        <p>Type: {this.state.ship.model.name}</p>
-                                        <p>Life: {this.state.ship.life}</p>
-                                        <p>Status: {this.state.ship.status.value}</p>
-                                        <p>City: {this.state.ship.city}</p>
-                                        <p>Move To</p>
-                                            <Map.Selection url="http://localhost:8080/map" onSelection={this.moveTo}/>
-                                        <hr></hr>
-                                        <h4>Cargo</h4>
-                                        <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status} city={this.state.ship.city}/>
-                                </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        ); */
-    } 
-}); 
-        
-window.ShipModal=Modal;
+    }
+});
+
+window.ShipModal = Modal;
