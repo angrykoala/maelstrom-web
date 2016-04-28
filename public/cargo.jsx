@@ -8,12 +8,32 @@ var Cargo = React.createClass({
     getInitialState: function(){
         return {
             products:[],
+            cityProducts:{},
             docked: (this.props.status == "docked")
         }
     },
     getCityDetails: function(){
-        console.log("Get City Details");
-        //Update this.state.products Here
+        $.ajax({
+            url: "http://localhost:8080/city/products/madrid",
+            type: "GET",
+            dataType: 'json',
+/*            headers: {
+                'Authorization': 'Bearer ' + token
+            },*/
+            cache: false,
+            success: function(data) {
+                if(!Products.loaded) console.log("WARNING: Products not loaded");
+                else this.state.products=Products.list;
+                this.setState({
+                    products: Products.list,
+                    cityProducts: data
+                });
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.log("ERROR " + err);
+                console.log("  " + JSON.stringify(xhr));
+            }.bind(this)
+        });
         
         
     },
@@ -21,13 +41,25 @@ var Cargo = React.createClass({
     if(this.state.docked) this.getCityDetails();
   },
     render: function() {
-        console.log(this.props.status);
-        console.log(this.props.city);
+        console.log(this.state.products);
+        console.log(this.state.cityProducts);
         
         var elements = [];
-        
-        for (var elem in this.props.products) {
-            elements.push(<ProductDisplay name={elem} quantity={this.props.products[elem]} shipId={this.props.id} docked={this.state.docked}/>);
+        if(!this.state.docked){
+            for (var elem in this.props.products) {
+                elements.push(<ProductDisplay name={elem} quantity={this.props.products[elem]} shipId={this.props.id} docked={this.state.docked}/>);
+            }
+        }
+        else{
+            var shipProd=this.props.products;
+            var cityProd=this.state.cityProducts;
+            var dock=this.state.docked;
+            var shipId=this.props.id;
+            this.state.products.map(function(elem) {
+                var shipq=shipProd[elem] || 0;
+                var cityq=cityProd[elem].quantity || 0;
+                elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq}/>);
+            });
         }
         return (
             <table className="table table-hover">
@@ -131,16 +163,21 @@ var ProductDisplay = React.createClass({
     },
     render: function() {
         var actionButtons;
+        var cityProduct;
         if (this.props.docked) {
             actionButtons = <div className="btn-group">
                 <button type="button" className="btn btn-default" onClick={this.buy}>Buy</button>
                 <button type="button" className="btn btn-default" onClick={this.sell}>Sell</button>
             </div>
+            
+            cityProduct=this.props.cityQuantity || 0;
         } else {
             actionButtons = <div className="btn-group">
                 <button type="button" className="btn btn-default" onClick={this.buy} disabled>Buy</button >
                 <button type="button" className="btn btn-default" onClick={this.sell} disabled>Sell</button>
             </div>
+            
+            cityProduct="";
         }
         return (
             <tr>
@@ -152,7 +189,7 @@ var ProductDisplay = React.createClass({
                     </form>
                     {actionButtons}
                 </td>
-                <td>--</td>
+                <td>{cityProduct}</td>
             </tr>
         );
     }
