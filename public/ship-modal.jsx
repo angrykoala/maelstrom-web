@@ -47,7 +47,30 @@ var ShipLoad = {
 var Modal = React.createClass({
     mixins: [ShipLoad],
     moveTo: function(selec) {
-        console.log("Move " + this.props.id + " from " + this.state.ship.city + " to " + selec);
+        if (User.logged() && this.state.ship.slug) {
+        var token = User.getToken();
+        $.ajax({
+            url: 'http://localhost:8080/user/move/ship',
+            type: "PUT",
+            dataType: 'json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: {
+                ship: this.state.ship.slug,
+                city: selec
+            },
+            cache: false,
+            success: function(data) {
+                var s=this.state.ship;
+                s.status.value="traveling";
+                this.setState({ship:s});
+            }.bind(this),
+            error: function(err, status) {
+                console.log(JSON.stringify(err))
+            }.bind(this)
+        });
+    }
     },
     render: function() {
         var shipId = this.props.id || "null";
