@@ -14,7 +14,7 @@ var Cargo = React.createClass({
     },
     getCityDetails: function(){
         $.ajax({
-            url: "http://localhost:8080/city/products/madrid",
+            url: URLS.world+"/city/products/"+this.props.city,
             type: "GET",
             dataType: 'json',
 /*            headers: {
@@ -34,8 +34,8 @@ var Cargo = React.createClass({
                 console.log("  " + JSON.stringify(xhr));
             }.bind(this)
         });
-        
-        
+
+
     },
     componentDidMount: function() {
     if(this.state.docked) this.getCityDetails();
@@ -43,7 +43,7 @@ var Cargo = React.createClass({
     render: function() {
         console.log(this.state.products);
         console.log(this.state.cityProducts);
-        
+
         var elements = [];
         if(!this.state.docked){
             for (var elem in this.props.products) {
@@ -57,6 +57,7 @@ var Cargo = React.createClass({
             var shipId=this.props.id;
             this.state.products.map(function(elem) {
                 var shipq=shipProd[elem] || 0;
+                console.log(elem);
                 var cityq=cityProd[elem].quantity || 0;
                 elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq}/>);
             });
@@ -91,9 +92,9 @@ var ProductDisplay = React.createClass({
     },
     handleChange: function(event) {
         var val = event.target.value;
-        if (val < 0) 
+        if (val < 0)
             val = 0;
-        
+
         this.setState({value: val});
     },
     buy: function() {
@@ -102,7 +103,7 @@ var ProductDisplay = React.createClass({
         if (User.logged() && val > 0) {
             var token = User.getToken();
             $.ajax({
-                url: "http://localhost:8080/user/buy",
+                url: URLS.world+"/user/buy",
                 type: "PUT",
                 dataType: 'json',
                 data: {
@@ -135,7 +136,7 @@ var ProductDisplay = React.createClass({
             var token = User.getToken();
 
             $.ajax({
-                url: "http://localhost:8080/user/sell",
+                url: URLS.world+"/user/sell",
                 type: "PUT",
                 dataType: 'json',
                 data: {
@@ -169,14 +170,14 @@ var ProductDisplay = React.createClass({
                 <button type="button" className="btn btn-default" onClick={this.buy}>Buy</button>
                 <button type="button" className="btn btn-default" onClick={this.sell}>Sell</button>
             </div>
-            
+
             cityProduct=this.props.cityQuantity || 0;
         } else {
             actionButtons = <div className="btn-group">
-                <button type="button" className="btn btn-default" onClick={this.buy} disabled>Buy</button >
+                <button type="button" className="btn btn-default" onClick={this.buy} disabled>Buy</button>
                 <button type="button" className="btn btn-default" onClick={this.sell} disabled>Sell</button>
             </div>
-            
+
             cityProduct="";
         }
         return (

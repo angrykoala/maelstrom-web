@@ -24,7 +24,7 @@ var ShipsLoad = {
         }
     },
     setShips: function(err, data) {
-        if (err) 
+        if (err)
             console.log(err);
         else {
             this.setState({ships: data});
@@ -39,7 +39,7 @@ var ShipList = React.createClass({
     mixins: [ShipsLoad],
     setModal: function(id,name){
         this.setState({id:id,name:name});
-    }, 
+    },
     render: function() {
         var setModal=this.setModal;
         var elements = this.state.ships.map(function(elem) {
@@ -50,7 +50,7 @@ var ShipList = React.createClass({
             );
         });
         var url=this.props.url+"/user/ship";
-        if (!elements || elements.length === 0) 
+        if (!elements || elements.length === 0)
             elements = "No Ships";
         return (
             <div>
@@ -89,7 +89,7 @@ var ShipDisplay = React.createClass({
 
 ReactDOM.render(
     <div>
-    <ShipList url="http://localhost:8080"/>
+    <ShipList url={URLS.world}/>
 </div>, document.getElementById('shipcontent'));
 
 window.Ships = {

@@ -1,4 +1,4 @@
-this.socket = io.connect('http://localhost:8080/', {
+this.socket = io.connect(URLS.world, {
 	'query': 'token=' + User.getToken()
 });
 

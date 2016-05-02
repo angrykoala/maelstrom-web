@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 function getDash(token) {
 	$.ajax({
-		url: "http://localhost:8081/restricted/dash",
+		url: URLS.user + "/restricted/dash",
 		type: "GET",
 		headers: {
 			'Authorization': 'Bearer ' + token

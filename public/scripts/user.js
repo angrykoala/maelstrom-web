@@ -1,6 +1,5 @@
-WorldUrl = "http://localhost:8080";
 User = {
-	url: "http://localhost:8081",
+	url: URLS.user,
 	getToken: function() {
 		return localStorage.token;
 	},
@@ -55,7 +54,7 @@ User = {
 	worldSignup: function() {
 		var token = localStorage.token; //this.getToken wont work idk why
 		$.ajax({
-			url: WorldUrl + "/user/signup",
+			url: URLS.world + "/user/signup",
 			type: "POST",
 			data: token,
 			headers: {

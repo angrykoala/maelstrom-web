@@ -31,7 +31,7 @@ var ShipLoad = {
         }
     },
     setShip: function(err, data) {
-        if (err) 
+        if (err)
             console.log(err);
         else {
             this.setState({ship: data, loaded: true});
@@ -39,7 +39,7 @@ var ShipLoad = {
     },
     componentWillReceiveProps: function(props) {
         this.setState({loaded: false});
-        if (props.id) 
+        if (props.id)
             this.loadShip(props.id);
         }
     };
@@ -50,7 +50,7 @@ var Modal = React.createClass({
         if (User.logged() && this.state.ship.slug) {
         var token = User.getToken();
         $.ajax({
-            url: 'http://localhost:8080/user/move/ship',
+            url: URLS.world+'/user/move/ship',
             type: "PUT",
             dataType: 'json',
             headers: {
