@@ -40,6 +40,6 @@ app.use(express.static('./public'));
 
 console.log("Maelström - Web");
 if (version) console.log("Version " + version);
-server = app.listen(serverConfig.port, "localhost", function() {
+server = app.listen(serverConfig.port, function() {
 	console.log("Server listening on port "+serverConfig.port);
 });
