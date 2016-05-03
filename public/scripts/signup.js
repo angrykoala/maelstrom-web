@@ -6,6 +6,7 @@ $(document).ready(function() {
 		var formURL = $(this).attr("action");
 		User.signup(postData, function(res) {
 			console.log(res);
+			window.location.href = '/';
 		});
 	});
 });
