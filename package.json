@@ -1,6 +1,6 @@
 {
 	"name": "maelstrom-web",
-	"version": "0.2.3",
+	"version": "0.3.0",
 	"description": "Web client for Maelström",
 	"main": "index.js",
 	"scripts": {
@@ -21,12 +21,12 @@
 	"homepage": "https://github.com/demiurgosoft/maelstrom-web#readme",
 	"dependencies": {
 		"babel-preset-react": "^6.5.0",
-		"babelify": "^7.2.0",
+		"babelify": "^7.3.0",
 		"ejs": "^2.4.1",
 		"express": "^4.13.4",
-		"react": "^0.14.8",
-		"react-bootstrap": "^0.28.4",
-		"react-dom": "^0.14.8"
+		"react": "^15.0.2",
+		"react-bootstrap": "^0.29.3",
+		"react-dom": "^15.0.2"
 	},
 	"devDependencies": {
 		"js-beautify": "^1.6.2"

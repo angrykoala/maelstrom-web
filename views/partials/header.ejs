@@ -19,6 +19,15 @@
     <!-- Socket.io -->
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 
+    <script>
+    var URLS={
+        world: "<%= urls.world || "http://localhost:8080" %>",
+        user: "<%= urls.user || "http://localhost:8081" %>"
+        //web: "http://localhost:9090"
+    };
+    </script>
+
+
     <!-- Bundle -->
         <script  src="/scripts/builds/components.js"></script>
 
