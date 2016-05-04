@@ -43,7 +43,7 @@ User = {
 				wsign();
 				Nav.setUserButtons();
 				Nav.setTabs();
-				ShipList.loadShips();
+				//ShipList.loadShips();
 				done();
 			},
 			error: function(res) {
