@@ -1,4 +1,4 @@
-module.exports = {
+var Utils = {
     Dropdown: React.createClass({
         propTypes: {
             elements: React.PropTypes.array.isRequired,
@@ -44,17 +44,20 @@ module.exports = {
                 );
             });
             return (
-                <form role="form">
-                    <div className="form-group">
+            //    <form role="form">
+            //        <div className="form-group">
                         <select className="form-control" id={this.props.title + "sel"} onChange={this.onSelectionWrapper} title={this.props.title} defaultValue={this.props.title}>
                             <option disabled>
                                 {this.props.title}
                             </option>
                             {elements}
                         </select>
-                    </div>
-                </form>
+            //        </div>
+            //    </form>
             );
         }
     })
-}
+};
+
+module.exports=Utils;
+window.ReactUtils=Utils;

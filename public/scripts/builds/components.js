@@ -80,7 +80,7 @@ module.exports = MapComponent;
 window.Map = MapComponent;
 
 },{"./api.js":1,"./utils.jsx":3}],3:[function(require,module,exports){
-module.exports = {
+var Utils = {
     Dropdown: React.createClass({
         displayName: "Dropdown",
 
@@ -140,26 +140,28 @@ module.exports = {
                     elem
                 );
             });
-            return React.createElement(
-                "form",
-                { role: "form" },
+            return(
+                //    <form role="form">
+                //        <div className="form-group">
                 React.createElement(
-                    "div",
-                    { className: "form-group" },
+                    "select",
+                    { className: "form-control", id: this.props.title + "sel", onChange: this.onSelectionWrapper, title: this.props.title, defaultValue: this.props.title },
                     React.createElement(
-                        "select",
-                        { className: "form-control", id: this.props.title + "sel", onChange: this.onSelectionWrapper, title: this.props.title, defaultValue: this.props.title },
-                        React.createElement(
-                            "option",
-                            { disabled: true },
-                            this.props.title
-                        ),
-                        elements
-                    )
+                        "option",
+                        { disabled: true },
+                        this.props.title
+                    ),
+                    elements
                 )
+                //        </div>
+                //    </form>
+
             );
         }
     })
 };
+
+module.exports = Utils;
+window.ReactUtils = Utils;
 
 },{}]},{},[2,3]);
