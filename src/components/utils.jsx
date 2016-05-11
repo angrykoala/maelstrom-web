@@ -26,7 +26,6 @@ var Utils = {
             );
         }
     }),
-
     Selection: React.createClass({
         propTypes: {
             elements: React.PropTypes.array.isRequired,
