@@ -22,6 +22,7 @@ var Cargo = React.createClass({
             },*/
             cache: false,
             success: function(data) {
+                console.log(JSON.stringify(data));
                 if(!Products.loaded) console.log("WARNING: Products not loaded");
                 else this.state.products=Products.list;
                 this.setState({

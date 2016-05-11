@@ -1,7 +1,6 @@
 /*
 Name: Maelström-Web
 Project: Maelström
-Version: 0.1.0
 Author: demiurgosoft <demiurgosoft@hotmail.com>
 Description: Maelström web client
 */
