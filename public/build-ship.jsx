@@ -17,7 +17,7 @@ var BuildButton = React.createClass({
 });
 var BuildModal = React.createClass({
     getInitialState: function() {
-        return {shipName: '', city: '', shipModel: ''};
+        return {shipName: '', city: '', shipModel: '', models:[]};
     },
     nameChange: function(event) {
         this.setState({shipName: event.target.value});
@@ -55,11 +55,13 @@ var BuildModal = React.createClass({
             });
         }
     },
-    render: function() {
-        var models = ShipModels.list.map(function(val) {
+    componentDidMount: function() {
+        var m = ShipModels.list.map(function(val) {
             return val.slug;
         });
-
+        this.setState({models: m});
+    },
+    render: function() {
         return (
             <div id="build-modal" className="modal fade" role="dialog">
                 <div className="modal-dialog">
@@ -79,7 +81,7 @@ var BuildModal = React.createClass({
                                 </div>
                                 <div className="form-group">
                                     <label>Ship Models:</label>
-                                    <ReactUtils.Selection elements={models} title="ShipModels" onSelection={this.shipChange}/>
+                                    <ReactUtils.Selection elements={this.state.models} title="Ship Model" onSelection={this.shipChange}/>
                                 </div>
                                 <div className="form-group">
                                     <button type="submit" className="btn btn-primary">Build</button>
