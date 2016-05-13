@@ -12,7 +12,7 @@ socket.on('error', function() {
 socket.on('money', function(msg) {
 	$(".money_display").text(msg);
 });
-socket.on('ship_update', function(msg) {
+socket.on('ship_arrive', function(msg) {
 	console.log("Ship Update "+msg);
 });
 

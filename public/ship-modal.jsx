@@ -76,6 +76,7 @@ var Modal = React.createClass({
         var shipId = this.props.id || "null";
         var bodyContent;
         if (this.state.loaded) {
+
             bodyContent = <div id="ship-data">
                 <p>Type: {this.state.ship.model.name}</p>
                 <p>Life: {this.state.ship.life}</p>
