@@ -55,6 +55,35 @@ var Utils = {
             //    </form>
             );
         }
+    }),
+    AutoCounter: React.createClass({
+        propTypes: {
+            time: React.PropTypes.number.isRequired,
+            onTimeout: React.PropTypes.func.isRequired
+        },
+        getInitialState: function() {
+            return {count: parseInt(this.props.time)+1};
+        },
+        componentDidMount: function(){
+            this.updateTime();
+        },
+        updateTime: function(){
+            var t=this.state.count;
+            t--;
+            if(t===0) this.props.onTimeout();
+            else{
+                this.timeCount=setTimeout(this.updateTime, 1000);
+                this.setState({count:t});
+            }
+        },
+        componentWillUnmount: function(){
+             clearTimeout(this.timeCount);
+        },
+        render: function(){
+            return(<span>{this.state.count}</span>);
+        }
+
+
     })
 };
 

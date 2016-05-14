@@ -4,9 +4,9 @@ var ShipLoad = {
             ship: {
                 model: "",
                 status: "",
-                loaded: false,
                 cargo: {}
-            }
+            },
+            loaded: false,
         };
     },
     loadShip: function(shipId) {
@@ -63,8 +63,9 @@ var Modal = React.createClass({
             cache: false,
             success: function(data) {
                 var s=this.state.ship;
-                s.status.value="traveling";
-                this.setState({ship:s});
+                this.reloadShip();
+                //s.status.value="traveling";
+                //this.setState({ship:s});
             }.bind(this),
             error: function(err, status) {
                 console.log(JSON.stringify(err))
@@ -72,15 +73,24 @@ var Modal = React.createClass({
         });
     }
     },
+    reloadShip: function(){
+        this.setState({loaded: false});
+        this.loadShip(this.state.ship.slug);
+    },
     render: function() {
         var shipId = this.props.id || "null";
         var bodyContent;
+        var remaining="";
+        if(this.state.ship.status.value==="traveling"){
+            var t=parseInt(this.state.ship.status.remaining);
+            remaining=<p>Remaining: <ReactUtils.AutoCounter time={t} onTimeout={this.reloadShip}/></p>
+        }
         if (this.state.loaded) {
-
             bodyContent = <div id="ship-data">
                 <p>Type: {this.state.ship.model.name}</p>
                 <p>Life: {this.state.ship.life}</p>
                 <p>Status: {this.state.ship.status.value}</p>
+                {remaining}
                 <p>City: {this.state.ship.city}</p>
                 <p>Move To</p>
                 <Map.Selection url={URLS.world+"/map"} onSelection={this.moveTo}/>

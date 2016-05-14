@@ -54,7 +54,6 @@ var Cargo = React.createClass({
             var shipId=this.props.id;
             this.state.products.map(function(elem) {
                 var shipq=shipProd[elem] || 0;
-                console.log(elem);
                 var cityq=cityProd[elem].quantity || 0;
                 elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq}/>);
             });
