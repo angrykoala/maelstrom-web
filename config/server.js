@@ -1,4 +1,4 @@
-module.exports={
-    port:process.env.PORT || 9090
+module.exports = {
+	port: process.env.PORT || 9090
 
 }

@@ -9,7 +9,7 @@ var express = require('express');
 var app = express();
 
 var urls = require('./config/urls');
-var serverConfig=require('./config/server');
+var serverConfig = require('./config/server');
 
 var version = process.env.npm_package_version;
 
@@ -40,5 +40,5 @@ app.use(express.static('./public'));
 console.log("Maelström - Web");
 if (version) console.log("Version " + version);
 server = app.listen(serverConfig.port, function() {
-	console.log("Server listening on port "+serverConfig.port);
+	console.log("Server listening on port " + serverConfig.port);
 });

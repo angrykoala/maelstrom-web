@@ -13,9 +13,9 @@ socket.on('money', function(msg) {
 	$(".money_display").text(msg);
 });
 socket.on('ship_arrive', function(msg) {
-	console.log("Ship Update "+msg);
+	console.log("Ship Update " + msg);
 });
 
-function addSocketEvent(eventName,cb){
-	socket.on(eventName,cb);
+function addSocketEvent(eventName, cb) {
+	socket.on(eventName, cb);
 }

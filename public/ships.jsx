@@ -1,10 +1,10 @@
 var ShipsLoad = {
     getInitialState: function() {
-        return {ships: [],id:"",name:""};
+        return {ships: [],id:"",name:"",loaded:false};
     },
     loadAllShips: function() {
         if (User.logged()) {
-            var cb = this.setShips;
+            //var cb = this.setShips;
             var token = User.getToken();
             $.ajax({
                 url: this.props.url+"/user/ships",
@@ -15,11 +15,12 @@ var ShipsLoad = {
                 },
                 cache: false,
                 success: function(data) {
-                    cb(null, data);
-                },
+                    this.setShips(null, data);
+                }.bind(this),
                 error: function(xhr, status, err) {
-                    cb({error: err});
-                }
+                    console.log("Error loading ships");
+                    setTimeout(this.loadAllShips,3000);
+                }.bind(this)
             });
         }
     },
@@ -27,7 +28,7 @@ var ShipsLoad = {
         if (err)
             console.log(err);
         else {
-            this.setState({ships: data});
+            this.setState({ships: data,loaded:true});
         }
     },
     componentDidMount: function() {
@@ -43,16 +44,19 @@ var ShipList = React.createClass({
     },
     render: function() {
         var setModal=this.setModal;
-        var elements = this.state.ships.map(function(elem) {
+        var elements =  <img src="images/ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img"/>;
+        var url=this.props.url+"/user/ship";
+        if(this.state.loaded){
+        elements= this.state.ships.map(function(elem) {
             return (
                 <div className="col-sm-6">
                     <ShipDisplay name={elem.name} model={elem.model} life={elem.life} id={elem.slug} onClick={setModal}/>
                 </div>
             );
         });
-        var url=this.props.url+"/user/ship";
         if (!elements || elements.length === 0)
             elements = "No Ships";
+        }
         return (
             <div>
             <div className="row">

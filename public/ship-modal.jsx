@@ -100,7 +100,7 @@ var Modal = React.createClass({
             </div>
 
         } else {
-            bodyContent = <img src="ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img"/>
+            bodyContent = <img src="images/ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img"/>
         }
 
         return (

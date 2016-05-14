@@ -1,29 +1,25 @@
-//Ship Models Hanndler
+//Ship Models Handler
 
-ShipModels = {
+var ShipModels = {
 	list: [],
 	loaded: false,
-	refreshProducts: function(done) {
+	refreshModels: function() {
 		$.ajax({
 			url: URLS.world + '/ship_models',
 			type: "GET",
 			dataType: 'json',
 			cache: false,
 			success: function(data) {
+				console.log("SUCCESS");
 				this.list = data;
 				this.loaded = true;
-				done(null);
 			}.bind(this),
 			error: function(xhr, status) {
-				done(xhr);
-			}
+				console.log("ERROR");
+				setTimeout(this.refreshModels, 3000);//Only called twice, WHY?
+			}.bind(this)
 		});
 	},
 };
 
-function onRefresh(err) {
-	if (err) setTimeout(function() {
-		ShipModels.refreshProducts(onRefresh);
-	}, 3000);
-}
-ShipModels.refreshProducts(onRefresh);
+ShipModels.refreshModels();
