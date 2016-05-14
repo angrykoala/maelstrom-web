@@ -84,7 +84,7 @@ var ProductDisplay = React.createClass({
         docked: React.PropTypes.bool.isRequired
     },
     getInitialState: function() {
-        return {value: null, quantity: this.props.quantity};
+        return {value: null, quantity: this.props.quantity, cityq:this.props.cityQuantity};
     },
     handleChange: function(event) {
         var val = event.target.value;
@@ -114,8 +114,10 @@ var ProductDisplay = React.createClass({
                 success: function(data) {
                     console.log("SUCCESS " + JSON.stringify(data));
                     var q = this.state.quantity;
+                    var cq=this.state.cityq;
                     this.setState({
-                        quantity: q + val
+                        quantity: q + val,
+                        cityq: cq-val
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
@@ -147,8 +149,10 @@ var ProductDisplay = React.createClass({
                 success: function(data) {
                     console.log("SUCCESS " + JSON.stringify(data));
                     var q = this.state.quantity;
+                    var cq=this.state.cityq;
                     this.setState({
-                        quantity: q - val
+                        quantity: q - val,
+                        cityq:cq+val
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
@@ -167,7 +171,7 @@ var ProductDisplay = React.createClass({
                 <button type="button" className="btn btn-default" onClick={this.sell}>Sell</button>
             </div>
 
-            cityProduct=this.props.cityQuantity || 0;
+            cityProduct=this.state.cityq || 0;
         } else {
             actionButtons = <div className="btn-group">
                 <button type="button" className="btn btn-default" onClick={this.buy} disabled>Buy</button>
