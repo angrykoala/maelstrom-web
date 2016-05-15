@@ -55,7 +55,8 @@ var Cargo = React.createClass({
             this.state.products.map(function(elem) {
                 var shipq=shipProd[elem] || 0;
                 var cityq=cityProd[elem].quantity || 0;
-                elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq}/>);
+                var price=cityProd[elem].price || 0;
+                elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq} price={price}/>);
             });
         }
         return (
@@ -66,6 +67,7 @@ var Cargo = React.createClass({
                         <th className="text-center">Ship</th>
                         <th className="text-center">Actions</th>
                         <th className="text-center">City</th>
+                        <th className="text-center">Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,7 +83,8 @@ var ProductDisplay = React.createClass({
         name: React.PropTypes.string.isRequired,
         quantity: React.PropTypes.number.isRequired,
         shipId: React.PropTypes.string.isRequired,
-        docked: React.PropTypes.bool.isRequired
+        docked: React.PropTypes.bool.isRequired,
+        price: React.PropTypes.number.isRequired
     },
     getInitialState: function() {
         return {value: null, quantity: this.props.quantity, cityq:this.props.cityQuantity};
@@ -191,6 +194,7 @@ var ProductDisplay = React.createClass({
                     {actionButtons}
                 </td>
                 <td>{cityProduct}</td>
+                <td>{this.props.price}</td>
             </tr>
         );
     }
