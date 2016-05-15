@@ -11,7 +11,6 @@ var ShipLoad = {
     },
     loadShip: function(shipId) {
         if (User.logged() && this.props.url && shipId) {
-            //var cb = this.setShip;
             var token = User.getToken();
             $.ajax({
                 url: this.props.url + "/" + shipId,
@@ -73,7 +72,6 @@ var Modal = React.createClass({
             }.bind(this),
             error: function(xhr, status) {
                 var err=xhr.responseJSON.error;
-                console.log(xhr.responseJSON);
                 this.setState({alertMsg:<p className="text-danger">Error on move Ship: {err}</p>});
             }.bind(this)
         });
