@@ -155,7 +155,8 @@ var ProductDisplay = React.createClass({
                     var cq=this.state.cityq;
                     this.setState({
                         quantity: q - val,
-                        cityq:cq+val
+                        cityq:cq+val,
+                        eventMessage:""
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {

@@ -17,7 +17,7 @@ var BuildButton = React.createClass({
 });
 var BuildModal = React.createClass({
     getInitialState: function() {
-        return {shipName: '', city: '', shipModel: '', models:[]};
+        return {shipName: '', city: '', shipModel: '', models:[], errorMessage:""};
     },
     nameChange: function(event) {
         this.setState({shipName: event.target.value});
@@ -46,11 +46,11 @@ var BuildModal = React.createClass({
                 },
                 cache: false,
                 success: function(data) {
-                    console.log("Ship build - OK");
+                    this.setState({errorMessage:<p className="text-success">Ship succesfully built</p>});
                 }.bind(this),
-                error: function(err, status) {
-                    console.log(JSON.stringify(err));
-                    console.log("Ship Build - Fail");
+                error: function(xhr, status) {
+                    var err=xhr.responseJSON.error || "";
+                    this.setState({errorMessage:<p className="text-danger">Error Building Ship {err}</p>});
                 }.bind(this)
             });
         }
@@ -83,6 +83,7 @@ var BuildModal = React.createClass({
                                     <label>Ship Models:</label>
                                     <ReactUtils.Selection elements={this.state.models} title="Ship Model" onSelection={this.shipChange}/>
                                 </div>
+                                {this.state.errorMessage}
                                 <div className="form-group">
                                     <button type="submit" className="btn btn-primary">Build</button>
                                 </div>
