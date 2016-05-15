@@ -87,7 +87,7 @@ var ProductDisplay = React.createClass({
         price: React.PropTypes.number.isRequired
     },
     getInitialState: function() {
-        return {value: null, quantity: this.props.quantity, cityq:this.props.cityQuantity};
+        return {value: null, quantity: this.props.quantity, cityq:this.props.cityQuantity,eventMessage:""};
     },
     handleChange: function(event) {
         var val = event.target.value;
@@ -115,24 +115,24 @@ var ProductDisplay = React.createClass({
                 },
                 cache: false,
                 success: function(data) {
-                    console.log("SUCCESS " + JSON.stringify(data));
                     var q = this.state.quantity;
                     var cq=this.state.cityq;
                     this.setState({
                         quantity: q + val,
-                        cityq: cq-val
+                        cityq: cq-val,
+                        eventMessage:""
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    console.log("ERROR " + err);
-                    console.log("  " + JSON.stringify(xhr));
+                    var errmsg=xhr.responseJSON.error;
+                    this.setState({eventMessage:"Error buying: " + errmsg});
+
                 }.bind(this)
             });
         }
     },
     sell: function() {
         var val = parseInt(this.state.value) || 0;
-        //console.log("Sell "+val+" of "+this.props.name+" in "+this.props.shipId);
         if (User.logged() && val > 0) {
             var token = User.getToken();
 
@@ -159,8 +159,8 @@ var ProductDisplay = React.createClass({
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    console.log("ERROR " + err);
-                    console.log("  " + JSON.stringify(xhr));
+                    var errmsg=xhr.responseJSON.error;
+                    this.setState({eventMessage:"Error selling: " + errmsg});
                 }.bind(this)
             });
         }
@@ -192,6 +192,7 @@ var ProductDisplay = React.createClass({
                         <input type="number" min="0" value={this.state.value} onChange={this.handleChange} className="form-control input-sm"></input>
                     </form>
                     {actionButtons}
+                    <p className="text-danger">{this.state.eventMessage}</p>
                 </td>
                 <td>{cityProduct}</td>
                 <td>{this.props.price}</td>

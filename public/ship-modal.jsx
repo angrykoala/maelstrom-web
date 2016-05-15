@@ -71,9 +71,10 @@ var Modal = React.createClass({
                 //s.status.value="traveling";
                 //this.setState({ship:s});
             }.bind(this),
-            error: function(err, status) {
-                this.setState({alertMsg:<p className="text-danger">Error on move Ship</p>});
-                console.log(JSON.stringify(err));
+            error: function(xhr, status) {
+                var err=xhr.responseJSON.error;
+                console.log(xhr.responseJSON);
+                this.setState({alertMsg:<p className="text-danger">Error on move Ship: {err}</p>});
             }.bind(this)
         });
     }
