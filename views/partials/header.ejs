@@ -1,5 +1,7 @@
 <head>
-    <title><%=title%></title>
+    <title>
+        <%=title%>
+    </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -20,22 +22,24 @@
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 
     <script>
-    var URLS={
-        world: "<%= urls.world || "http://localhost:8080" %>",
-        user: "<%= urls.user || "http://localhost:8081" %>"
-        //web: "http://localhost:9090"
-    };
+        var URLS = {
+            world: "<%= urls.world || "
+            http: //localhost:8080" %>",
+                user: "<%= urls.user || "
+            http: //localhost:8081" %>"
+            //web: "http://localhost:9090"
+        };
     </script>
 
 
     <!-- Bundle -->
-        <script  src="/scripts/builds/components.js"></script>
+    <script src="/scripts/builds/components.js"></script>
 
     <!-- Scripts -->
-        <script src="/scripts/urls.js"></script>
-        <script src="/scripts/user.js"></script>
-        <script src="/scripts/ship-models.js"></script>
-        <script src="/scripts/products.js"></script>
-        <script src="/scripts/socket-handler.js"></script>
+    <script src="/scripts/urls.js"></script>
+    <script src="/scripts/user.js"></script>
+    <script src="/scripts/ship-models.js"></script>
+    <script src="/scripts/products.js"></script>
+    <script src="/scripts/socket-handler.js"></script>
 
 </head>

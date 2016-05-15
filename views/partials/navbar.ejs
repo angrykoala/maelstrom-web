@@ -22,30 +22,28 @@
                         <a id="ships-tab" data-toggle="tab" href="/#ships">Ships</a>
                     </li>
                 </ul>
-            <% } %>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a id="account-button" class="hidden" href="/account">
-                        <span class="glyphicon glyphicon-user"></span>
-                        My Account</a>
-                </li>
-                <li>
-                    <a id="logout-button" class="hidden" href="/">
-                        <span class="glyphicon glyphicon-log-out"></span>
-                        Logout</a>
-                </li>
-                <li>
-                    <a id="login-button" href="#" data-toggle="popover" class="hidden" data-placement="bottom" title="Login" onclick="return false" data-content='<% include login%>'>
-                        <span class="glyphicon glyphicon-log-in"></span>
-                        Login</a>
-                </li>
-                <li>
-                    <a id="signup-button" href="/signup" class="hidden">
-                        <span class="glyphicon glyphicon-user"></span>
-                        Sign Up</a>
-                </li>
-                <script src="scripts/navbar.js"></script>
-            </ul>
+                <% } %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a id="account-button" class="hidden" href="/account">
+                                <span class="glyphicon glyphicon-user"></span> My Account</a>
+                        </li>
+                        <li>
+                            <a id="logout-button" class="hidden" href="/">
+                                <span class="glyphicon glyphicon-log-out"></span> Logout
+                            </a>
+                        </li>
+                        <li>
+                            <a id="login-button" href="#" data-toggle="popover" class="hidden" data-placement="bottom" title="Login" onclick="return false" data-content='<% include login%>'>
+                                <span class="glyphicon glyphicon-log-in"></span> Login
+                            </a>
+                        </li>
+                        <li>
+                            <a id="signup-button" href="/signup" class="hidden">
+                                <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                        </li>
+                        <script src="scripts/navbar.js"></script>
+                    </ul>
         </div>
     </div>
 </nav>

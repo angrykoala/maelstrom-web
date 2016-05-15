@@ -16,7 +16,7 @@ var ShipModels = {
 			}.bind(this),
 			error: function(xhr, status) {
 				console.log("ERROR");
-				setTimeout(this.refreshModels, 3000);//Only called twice, WHY?
+				setTimeout(this.refreshModels, 3000); //Only called twice, WHY?
 			}.bind(this)
 		});
 	},

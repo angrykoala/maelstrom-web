@@ -5,29 +5,28 @@ var Cargo = React.createClass({
         status: React.PropTypes.string.isRequired,
         city: React.PropTypes.string.isRequired
     },
-    getInitialState: function(){
+    getInitialState: function() {
         return {
-            products:[],
-            cityProducts:{},
+            products: [],
+            cityProducts: {},
             docked: (this.props.status == "docked")
         }
     },
-    getCityDetails: function(){
+    getCityDetails: function() {
         $.ajax({
-            url: URLS.world+"/city/products/"+this.props.city,
+            url: URLS.world + "/city/products/" + this.props.city,
             type: "GET",
             dataType: 'json',
-/*            headers: {
+            /*            headers: {
                 'Authorization': 'Bearer ' + token
             },*/
             cache: false,
             success: function(data) {
-                if(!Products.loaded) console.log("WARNING: Products not loaded");
-                else this.state.products=Products.list;
-                this.setState({
-                    products: Products.list,
-                    cityProducts: data
-                });
+                if (!Products.loaded)
+                    console.log("WARNING: Products not loaded");
+                else
+                    this.state.products = Products.list;
+                this.setState({products: Products.list, cityProducts: data});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.log("ERROR " + err);
@@ -35,27 +34,27 @@ var Cargo = React.createClass({
             }.bind(this)
         });
 
-
     },
     componentDidMount: function() {
-    if(this.state.docked) this.getCityDetails();
-  },
+        if (this.state.docked)
+            this.getCityDetails();
+        }
+    ,
     render: function() {
         var elements = [];
-        if(!this.state.docked){
+        if (!this.state.docked) {
             for (var elem in this.props.products) {
                 elements.push(<ProductDisplay name={elem} quantity={this.props.products[elem]} shipId={this.props.id} docked={this.state.docked}/>);
             }
-        }
-        else{
-            var shipProd=this.props.products;
-            var cityProd=this.state.cityProducts;
-            var dock=this.state.docked;
-            var shipId=this.props.id;
+        } else {
+            var shipProd = this.props.products;
+            var cityProd = this.state.cityProducts;
+            var dock = this.state.docked;
+            var shipId = this.props.id;
             this.state.products.map(function(elem) {
-                var shipq=shipProd[elem] || 0;
-                var cityq=cityProd[elem].quantity || 0;
-                var price=cityProd[elem].price || 0;
+                var shipq = shipProd[elem] || 0;
+                var cityq = cityProd[elem].quantity || 0;
+                var price = cityProd[elem].price || 0;
                 elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq} price={price}/>);
             });
         }
@@ -87,7 +86,7 @@ var ProductDisplay = React.createClass({
         price: React.PropTypes.number.isRequired
     },
     getInitialState: function() {
-        return {value: null, quantity: this.props.quantity, cityq:this.props.cityQuantity,eventMessage:""};
+        return {value: null, quantity: this.props.quantity, cityq: this.props.cityQuantity, eventMessage: ""};
     },
     handleChange: function(event) {
         var val = event.target.value;
@@ -102,7 +101,7 @@ var ProductDisplay = React.createClass({
         if (User.logged() && val > 0) {
             var token = User.getToken();
             $.ajax({
-                url: URLS.world+"/user/buy",
+                url: URLS.world + "/user/buy",
                 type: "PUT",
                 dataType: 'json',
                 data: {
@@ -116,16 +115,18 @@ var ProductDisplay = React.createClass({
                 cache: false,
                 success: function(data) {
                     var q = this.state.quantity;
-                    var cq=this.state.cityq;
+                    var cq = this.state.cityq;
                     this.setState({
                         quantity: q + val,
-                        cityq: cq-val,
-                        eventMessage:""
+                        cityq: cq - val,
+                        eventMessage: ""
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    var errmsg=xhr.responseJSON.error;
-                    this.setState({eventMessage:"Error buying: " + errmsg});
+                    var errmsg = xhr.responseJSON.error;
+                    this.setState({
+                        eventMessage: "Error buying: " + errmsg
+                    });
 
                 }.bind(this)
             });
@@ -137,7 +138,7 @@ var ProductDisplay = React.createClass({
             var token = User.getToken();
 
             $.ajax({
-                url: URLS.world+"/user/sell",
+                url: URLS.world + "/user/sell",
                 type: "PUT",
                 dataType: 'json',
                 data: {
@@ -152,16 +153,18 @@ var ProductDisplay = React.createClass({
                 success: function(data) {
                     console.log("SUCCESS " + JSON.stringify(data));
                     var q = this.state.quantity;
-                    var cq=this.state.cityq;
+                    var cq = this.state.cityq;
                     this.setState({
                         quantity: q - val,
-                        cityq:cq+val,
-                        eventMessage:""
+                        cityq: cq + val,
+                        eventMessage: ""
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    var errmsg=xhr.responseJSON.error;
-                    this.setState({eventMessage:"Error selling: " + errmsg});
+                    var errmsg = xhr.responseJSON.error;
+                    this.setState({
+                        eventMessage: "Error selling: " + errmsg
+                    });
                 }.bind(this)
             });
         }
@@ -175,14 +178,14 @@ var ProductDisplay = React.createClass({
                 <button type="button" className="btn btn-default" onClick={this.sell}>Sell</button>
             </div>
 
-            cityProduct=this.state.cityq || 0;
+            cityProduct = this.state.cityq || 0;
         } else {
             actionButtons = <div className="btn-group">
                 <button type="button" className="btn btn-default" onClick={this.buy} disabled>Buy</button>
                 <button type="button" className="btn btn-default" onClick={this.sell} disabled>Sell</button>
             </div>
 
-            cityProduct="";
+            cityProduct = "";
         }
         return (
             <tr>
