@@ -46,6 +46,9 @@ var ShipLoad = {
 
 var Modal = React.createClass({
     mixins: [ShipLoad],
+    getInitialState: function() {
+        return {alertMsg:""};
+    },
     moveTo: function(selec) {
         if (User.logged() && this.state.ship.slug) {
         var token = User.getToken();
@@ -63,12 +66,14 @@ var Modal = React.createClass({
             cache: false,
             success: function(data) {
                 var s=this.state.ship;
+                this.setState({alertMsg:<p className="text-success">Operation Successful</p>});
                 this.reloadShip();
                 //s.status.value="traveling";
                 //this.setState({ship:s});
             }.bind(this),
             error: function(err, status) {
-                console.log(JSON.stringify(err))
+                this.setState({alertMsg:<p className="text-danger">Error on move Ship</p>});
+                console.log(JSON.stringify(err));
             }.bind(this)
         });
     }
@@ -81,6 +86,10 @@ var Modal = React.createClass({
         var shipId = this.props.id || "null";
         var bodyContent;
         var remaining="";
+        var alert=<p></p>;
+        if(this.state.alertMsg){
+            alert=this.state.alertMsg;
+        }
         if(this.state.ship.status.value==="traveling"){
             var t=parseInt(this.state.ship.status.remaining);
             remaining=<p>Remaining: <ReactUtils.AutoCounter time={t} onTimeout={this.reloadShip}/></p>
@@ -94,6 +103,7 @@ var Modal = React.createClass({
                 <p>City: {this.state.ship.city}</p>
                 <p>Move To</p>
                 <Map.Selection url={URLS.world+"/map"} onSelection={this.moveTo}/>
+                {alert}
                 <hr></hr>
                 <h4>Cargo</h4>
                 <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status.value} city={this.state.ship.city}/>
