@@ -88,4 +88,3 @@ var Utils = {
 };
 
 module.exports=Utils;
-window.ReactUtils=Utils;

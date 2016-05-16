@@ -11,9 +11,9 @@ var MapLoad = {
         Api.get(this.props.url, this.setMap);
     },
     setMap: function(err, data) {
-        if (err) 
+        if (err)
             console.log(err);
-        else 
+        else
             this.setState({map: data});
         }
     ,
@@ -38,4 +38,3 @@ var MapComponent = {
 }
 
 module.exports = MapComponent;
-window.Map = MapComponent;

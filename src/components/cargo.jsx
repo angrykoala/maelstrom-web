@@ -84,7 +84,8 @@ var ProductDisplay = React.createClass({
         quantity: React.PropTypes.number.isRequired,
         shipId: React.PropTypes.string.isRequired,
         docked: React.PropTypes.bool.isRequired,
-        price: React.PropTypes.number.isRequired
+        price: React.PropTypes.number,
+        cityQuantity: React.PropTypes.number
     },
     getInitialState: function() {
         return {value: null, quantity: this.props.quantity, cityq:this.props.cityQuantity,eventMessage:""};
@@ -202,7 +203,4 @@ var ProductDisplay = React.createClass({
     }
 });
 
-module.exports={
-    Display: Cargo,
-    Product: ProductDisplay
-};
+module.exports=Cargo;

@@ -36,6 +36,177 @@ module.exports = Api;
 window.Map = Api;
 
 },{}],2:[function(require,module,exports){
+var Utils = require('./utils.jsx');
+var Map = require('./map.jsx');
+
+var BuildButton = React.createClass({
+    displayName: 'BuildButton',
+
+    getInitialState: function () {
+        return { clicked: false };
+    },
+    render: function () {
+        var modal = "";
+        if (this.state.clicked) modal = React.createElement('buildModal', null);
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'button',
+                { type: 'button', className: 'btn btn-primary', 'data-toggle': 'modal', 'data-target': '#build-modal' },
+                'Build Ship'
+            ),
+            React.createElement(BuildModal, null)
+        );
+    }
+});
+var BuildModal = React.createClass({
+    displayName: 'BuildModal',
+
+    getInitialState: function () {
+        return { shipName: '', city: '', shipModel: '', models: [], errorMessage: "" };
+    },
+    nameChange: function (event) {
+        this.setState({ shipName: event.target.value });
+    },
+    cityChange: function (city) {
+        this.setState({ city: city });
+    },
+    shipChange: function (ship) {
+        this.setState({ shipModel: ship });
+    },
+    buildShip: function (e) {
+        e.preventDefault();
+        if (User.logged()) {
+            var token = User.getToken();
+            $.ajax({
+                url: URLS.world + '/user/build/ship',
+                type: "PUT",
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                data: {
+                    model: this.state.shipModel,
+                    ship_name: this.state.shipName,
+                    city: this.state.city
+                },
+                cache: false,
+                success: function (data) {
+                    this.setState({ errorMessage: React.createElement(
+                            'p',
+                            { className: 'text-success' },
+                            'Ship succesfully built'
+                        ) });
+                }.bind(this),
+                error: function (xhr, status) {
+                    var err = xhr.responseJSON.error || "";
+                    this.setState({ errorMessage: React.createElement(
+                            'p',
+                            { className: 'text-danger' },
+                            'Error Building Ship ',
+                            err
+                        ) });
+                }.bind(this)
+            });
+        }
+    },
+    componentDidMount: function () {
+        var m = ShipModels.list.map(function (val) {
+            return val.slug;
+        });
+        this.setState({ models: m });
+    },
+    render: function () {
+        return React.createElement(
+            'div',
+            { id: 'build-modal', className: 'modal fade', role: 'dialog' },
+            React.createElement(
+                'div',
+                { className: 'modal-dialog' },
+                React.createElement(
+                    'div',
+                    { className: 'modal-content' },
+                    React.createElement(
+                        'div',
+                        { className: 'modal-header' },
+                        React.createElement(
+                            'button',
+                            { type: 'button', className: 'close', 'data-dismiss': 'modal' },
+                            '×'
+                        ),
+                        React.createElement(
+                            'h4',
+                            { className: 'modal-title' },
+                            'Build Ship'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'modal-body' },
+                        React.createElement(
+                            'form',
+                            { id: 'build-form', role: 'form', action: '', onSubmit: this.buildShip },
+                            React.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                React.createElement('input', { type: 'text', placeholder: 'Ship Name', className: 'form-control', onChange: this.nameChange })
+                            ),
+                            React.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                React.createElement(
+                                    'label',
+                                    null,
+                                    'City:'
+                                ),
+                                React.createElement(Map.Selection, { url: URLS.world + "/map", onSelection: this.cityChange })
+                            ),
+                            React.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                React.createElement(
+                                    'label',
+                                    null,
+                                    'Ship Models:'
+                                ),
+                                React.createElement(Utils.Selection, { elements: this.state.models, title: 'Ship Model', onSelection: this.shipChange })
+                            ),
+                            this.state.errorMessage,
+                            React.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                React.createElement(
+                                    'button',
+                                    { type: 'submit', className: 'btn btn-primary' },
+                                    'Build'
+                                )
+                            )
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'modal-footer' },
+                        React.createElement(
+                            'button',
+                            { type: 'button', className: 'btn btn-default', 'data-dismiss': 'modal' },
+                            'Close'
+                        )
+                    )
+                )
+            )
+        );
+    }
+});
+
+ReactDOM.render(React.createElement(
+    'div',
+    null,
+    React.createElement(BuildButton, null)
+), document.getElementById('build-button'));
+
+},{"./map.jsx":4,"./utils.jsx":7}],3:[function(require,module,exports){
 var Cargo = React.createClass({
     displayName: "Cargo",
 
@@ -148,7 +319,8 @@ var ProductDisplay = React.createClass({
         quantity: React.PropTypes.number.isRequired,
         shipId: React.PropTypes.string.isRequired,
         docked: React.PropTypes.bool.isRequired,
-        price: React.PropTypes.number.isRequired
+        price: React.PropTypes.number,
+        cityQuantity: React.PropTypes.number
     },
     getInitialState: function () {
         return { value: null, quantity: this.props.quantity, cityq: this.props.cityQuantity, eventMessage: "" };
@@ -308,12 +480,9 @@ var ProductDisplay = React.createClass({
     }
 });
 
-module.exports = {
-    Display: Cargo,
-    Product: ProductDisplay
-};
+module.exports = Cargo;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var Utils = require('./utils.jsx');
 var Api = require('./api.js');
 var Dropdown = Utils.Dropdown;
@@ -355,11 +524,11 @@ var MapComponent = {
 };
 
 module.exports = MapComponent;
-window.Map = MapComponent;
 
-},{"./api.js":1,"./utils.jsx":6}],4:[function(require,module,exports){
+},{"./api.js":1,"./utils.jsx":7}],5:[function(require,module,exports){
 var AutoCounter = require('./utils.jsx').AutoCounter;
 var Cargo = require('./cargo.jsx');
+var Map = require('./map.jsx');
 
 var ShipLoad = {
     getInitialState: function () {
@@ -511,7 +680,7 @@ var Modal = React.createClass({
                     null,
                     'Cargo'
                 ),
-                React.createElement(Cargo.Display, { products: this.state.ship.cargo, id: shipId, status: this.state.ship.status.value, city: this.state.ship.city })
+                React.createElement(Cargo, { products: this.state.ship.cargo, id: shipId, status: this.state.ship.status.value, city: this.state.ship.city })
             );
         } else {
             bodyContent = React.createElement('img', { src: 'images/ajax-loader.gif', alt: 'Loading', width: '42', height: '42', className: 'loading-img' });
@@ -564,10 +733,9 @@ var Modal = React.createClass({
     }
 });
 
-//window.ShipModal = Modal;
 module.exports = Modal;
 
-},{"./cargo.jsx":2,"./utils.jsx":6}],5:[function(require,module,exports){
+},{"./cargo.jsx":3,"./map.jsx":4,"./utils.jsx":7}],6:[function(require,module,exports){
 var ShipModal = require('./ship-modal.jsx');
 
 var ShipsLoad = {
@@ -681,10 +849,15 @@ var ShipDisplay = React.createClass({
 var ShipsComponent = {
     list: ShipList
 };
-window.Ships = ShipsComponent;
-module.exports = ShipsComponent;
+//module.exports=ShipsComponent;
 
-},{"./ship-modal.jsx":4}],6:[function(require,module,exports){
+ReactDOM.render(React.createElement(
+    "div",
+    null,
+    React.createElement(ShipList, null)
+), document.getElementById('ship-list'));
+
+},{"./ship-modal.jsx":5}],7:[function(require,module,exports){
 var Utils = {
     Dropdown: React.createClass({
         displayName: "Dropdown",
@@ -799,6 +972,5 @@ var Utils = {
 };
 
 module.exports = Utils;
-window.ReactUtils = Utils;
 
-},{}]},{},[2,3,4,5,6]);
+},{}]},{},[2,3,4,5,6,7]);

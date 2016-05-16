@@ -1,5 +1,6 @@
 var AutoCounter=require('./utils.jsx').AutoCounter;
 var Cargo=require('./cargo.jsx');
+var Map=require('./map.jsx');
 
 var ShipLoad = {
     getInitialState: function() {
@@ -108,7 +109,7 @@ var Modal = React.createClass({
                 {alert}
                 <hr></hr>
                 <h4>Cargo</h4>
-                <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status.value} city={this.state.ship.city}/>
+                <Cargo products={this.state.ship.cargo} id={shipId} status={this.state.ship.status.value} city={this.state.ship.city}/>
             </div>
 
         } else {
@@ -138,5 +139,4 @@ var Modal = React.createClass({
     }
 });
 
-//window.ShipModal = Modal;
 module.exports=Modal;

@@ -1,3 +1,6 @@
+var Utils=require('./utils.jsx');
+var Map=require('./map.jsx');
+
 var BuildButton = React.createClass({
     getInitialState: function() {
         return {clicked: false};
@@ -81,7 +84,7 @@ var BuildModal = React.createClass({
                                 </div>
                                 <div className="form-group">
                                     <label>Ship Models:</label>
-                                    <ReactUtils.Selection elements={this.state.models} title="Ship Model" onSelection={this.shipChange}/>
+                                    <Utils.Selection elements={this.state.models} title="Ship Model" onSelection={this.shipChange}/>
                                 </div>
                                 {this.state.errorMessage}
                                 <div className="form-group">
@@ -101,6 +104,7 @@ var BuildModal = React.createClass({
 });
 
 ReactDOM.render(
-    <div>
+<div>
     <BuildButton/>
-</div>, document.getElementById('build-button'));
+</div>,
+document.getElementById('build-button'));

@@ -96,5 +96,10 @@ var ShipDisplay = React.createClass({
 var ShipsComponent={
     list: ShipList
 }
-window.Ships=ShipsComponent;
-module.exports=ShipsComponent;
+//module.exports=ShipsComponent;
+
+ReactDOM.render(
+<div>
+    <ShipList/>
+</div>,
+document.getElementById('ship-list'));
