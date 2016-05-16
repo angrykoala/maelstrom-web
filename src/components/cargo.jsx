@@ -202,7 +202,7 @@ var ProductDisplay = React.createClass({
     }
 });
 
-window.Cargo = {
+module.exports={
     Display: Cargo,
     Product: ProductDisplay
 };

@@ -1,3 +1,6 @@
+var AutoCounter=require('./utils.jsx').AutoCounter;
+var Cargo=require('./cargo.jsx');
+
 var ShipLoad = {
     getInitialState: function() {
         return {
@@ -91,7 +94,7 @@ var Modal = React.createClass({
         }
         if(this.state.ship.status.value==="traveling"){
             var t=parseInt(this.state.ship.status.remaining);
-            remaining=<p>Remaining: <ReactUtils.AutoCounter time={t} onTimeout={this.reloadShip}/></p>
+            remaining=<p>Remaining: <AutoCounter time={t} onTimeout={this.reloadShip}/></p>
         }
         if (this.state.loaded) {
             bodyContent = <div id="ship-data">
@@ -135,4 +138,5 @@ var Modal = React.createClass({
     }
 });
 
-window.ShipModal = Modal;
+//window.ShipModal = Modal;
+module.exports=Modal;

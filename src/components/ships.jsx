@@ -1,3 +1,5 @@
+var ShipModal=require('./ship-modal.jsx');
+
 var ShipsLoad = {
     getInitialState: function() {
         return {ships: [],id:"",name:"",loaded:false};
@@ -7,7 +9,7 @@ var ShipsLoad = {
             //var cb = this.setShips;
             var token = User.getToken();
             $.ajax({
-                url: this.props.url+"/user/ships",
+                url: URLS.world+"/user/ships",
                 type: "GET",
                 dataType: 'json',
                 headers: {
@@ -45,7 +47,7 @@ var ShipList = React.createClass({
     render: function() {
         var setModal=this.setModal;
         var elements =  <img src="images/ajax-loader.gif" alt="Loading" width="42" height="42" className="loading-img"/>;
-        var url=this.props.url+"/user/ship";
+        var url=URLS.world+"/user/ship";
         if(this.state.loaded){
         elements= this.state.ships.map(function(elem) {
             return (
@@ -91,12 +93,8 @@ var ShipDisplay = React.createClass({
         );
     }
 });
-
-ReactDOM.render(
-    <div>
-    <ShipList url={URLS.world}/>
-</div>, document.getElementById('shipcontent'));
-
-window.Ships = {
+var ShipsComponent={
     list: ShipList
-};
+}
+window.Ships=ShipsComponent;
+module.exports=ShipsComponent;
