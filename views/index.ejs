@@ -1,33 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<% var title="Maelström" %>
+    <% var title="Maelström" %>
     <% include partials/header.ejs %>
 
-        <body>
-            <% include partials/navbar.ejs %>
-                <div class="container text-center">
-                    <div class="row">
-                        <% include partials/left_menu.ejs %>
-                            <div class="col-sm-7">
-                                <div class="panel panel-default">
-                                    <div class="tab-content panel-body">
-                                        <div id="home" class="tab-pane fade in active">
-                                            <% include partials/home.ejs %>
-                                        </div>
-                                        <div id="map" class="tab-pane fade">
-                                            <% include partials/map.ejs %>
-                                        </div>
-                                        <div id="ships" class="tab-pane fade">
-                                            <% include partials/ships.ejs %>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <% include partials/right_menu.ejs %>
+    <body>
+        <% include partials/navbar.ejs %>
+        <div class="container text-center">
+            <div class="row">
+                <% include partials/left_menu.ejs %>
+                <div class="col-sm-7">
+                        <div class="panel panel-default">
+                    <div class="tab-content panel-body">
+                    <div id="home" class="tab-pane fade in active"><% include partials/home.ejs %></div>
+                    <div id="map" class="tab-pane fade"><% include partials/map.ejs %> </div>
+                    <div id="ships" class="tab-pane fade"><% include partials/ships.ejs %> </div>
                     </div>
                 </div>
-                <% include partials/footer.ejs %>
-        </body>
+                </div>
+                <% include partials/right_menu.ejs %>
+            </div>
+        </div>
+        <% include partials/footer.ejs %>
+    </body>
 
 </html>

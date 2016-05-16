@@ -44,22 +44,14 @@ var Utils = {
             });
             return (
             //    <form role="form">
-            //        <div className="form-group"> < select className = "form-control" id = {
-                this.props.title + "sel"
-            }
-            onChange = {
-                this.onSelectionWrapper
-            }
-            title = {
-                this.props.title
-            }
-            defaultValue = {
-                this.props.title
-            } > <option disabled>
-                    {this.props.title}
-                </option>
-                {elements} < /select>
-            //        </div >
+            //        <div className="form-group">
+                        <select className="form-control" id={this.props.title + "sel"} onChange={this.onSelectionWrapper} title={this.props.title} defaultValue={this.props.title}>
+                            <option disabled>
+                                {this.props.title}
+                            </option>
+                            {elements}
+                        </select>
+            //        </div>
             //    </form>
             );
         }
@@ -70,34 +62,30 @@ var Utils = {
             onTimeout: React.PropTypes.func.isRequired
         },
         getInitialState: function() {
-            return {
-                count: parseInt(this.props.time) + 1
-            };
+            return {count: parseInt(this.props.time)+1};
         },
-        componentDidMount: function() {
+        componentDidMount: function(){
             this.updateTime();
         },
-        updateTime: function() {
-            var t = this.state.count;
+        updateTime: function(){
+            var t=this.state.count;
             t--;
-            if (t === 0)
-                this.props.onTimeout();
-            else {
-                this.timeCount = setTimeout(this.updateTime, 1000);
-                this.setState({count: t});
+            if(t===0) this.props.onTimeout();
+            else{
+                this.timeCount=setTimeout(this.updateTime, 1000);
+                this.setState({count:t});
             }
         },
-        componentWillUnmount: function() {
-            clearTimeout(this.timeCount);
+        componentWillUnmount: function(){
+             clearTimeout(this.timeCount);
         },
-        render: function() {
-            return (
-                <span>{this.state.count}</span>
-            );
+        render: function(){
+            return(<span>{this.state.count}</span>);
         }
+
 
     })
 };
 
-module.exports = Utils;
-window.ReactUtils = Utils;
+module.exports=Utils;
+window.ReactUtils=Utils;

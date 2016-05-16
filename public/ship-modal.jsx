@@ -6,7 +6,7 @@ var ShipLoad = {
                 status: "",
                 cargo: {}
             },
-            loaded: false
+            loaded: false,
         };
     },
     loadShip: function(shipId) {
@@ -46,57 +46,52 @@ var ShipLoad = {
 var Modal = React.createClass({
     mixins: [ShipLoad],
     getInitialState: function() {
-        return {alertMsg: ""};
+        return {alertMsg:""};
     },
     moveTo: function(selec) {
         if (User.logged() && this.state.ship.slug) {
-            var token = User.getToken();
-            $.ajax({
-                url: URLS.world + '/user/move/ship',
-                type: "PUT",
-                dataType: 'json',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                data: {
-                    ship: this.state.ship.slug,
-                    city: selec
-                },
-                cache: false,
-                success: function(data) {
-                    var s = this.state.ship;
-                    this.setState({
-                        alertMsg: <p className="text-success">Operation Successful</p>
-                    });
-                    this.reloadShip();
-                    //s.status.value="traveling";
-                    //this.setState({ship:s});
-                }.bind(this),
-                error: function(xhr, status) {
-                    var err = xhr.responseJSON.error;
-                    this.setState({
-                        alertMsg: <p className="text-danger">Error on move Ship: {err}</p>
-                    });
-                }.bind(this)
-            });
-        }
+        var token = User.getToken();
+        $.ajax({
+            url: URLS.world+'/user/move/ship',
+            type: "PUT",
+            dataType: 'json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            data: {
+                ship: this.state.ship.slug,
+                city: selec
+            },
+            cache: false,
+            success: function(data) {
+                var s=this.state.ship;
+                this.setState({alertMsg:<p className="text-success">Operation Successful</p>});
+                this.reloadShip();
+                //s.status.value="traveling";
+                //this.setState({ship:s});
+            }.bind(this),
+            error: function(xhr, status) {
+                var err=xhr.responseJSON.error;
+                this.setState({alertMsg:<p className="text-danger">Error on move Ship: {err}</p>});
+            }.bind(this)
+        });
+    }
     },
-    reloadShip: function() {
+    reloadShip: function(){
         this.setState({loaded: false});
         this.loadShip(this.state.ship.slug);
     },
     render: function() {
         var shipId = this.props.id || "null";
         var bodyContent;
-        var remaining = "";
-        var alert = <p></p>;
-        if (this.state.alertMsg) {
-            alert = this.state.alertMsg;
+        var remaining="";
+        var alert=<p></p>;
+        if(this.state.alertMsg){
+            alert=this.state.alertMsg;
         }
-        if (this.state.ship.status.value === "traveling") {
-            var t = parseInt(this.state.ship.status.remaining);
-            remaining = <p>Remaining:
-                <ReactUtils.AutoCounter time={t} onTimeout={this.reloadShip}/></p>
+        if(this.state.ship.status.value==="traveling"){
+            var t=parseInt(this.state.ship.status.remaining);
+            remaining=<p>Remaining: <ReactUtils.AutoCounter time={t} onTimeout={this.reloadShip}/></p>
         }
         if (this.state.loaded) {
             bodyContent = <div id="ship-data">
@@ -106,7 +101,8 @@ var Modal = React.createClass({
                 {remaining}
                 <p>City: {this.state.ship.city}</p>
                 <p>Move To</p>
-                <Map.Selection url={URLS.world + "/map"} onSelection={this.moveTo}/> {alert}
+                <Map.Selection url={URLS.world+"/map"} onSelection={this.moveTo}/>
+                {alert}
                 <hr></hr>
                 <h4>Cargo</h4>
                 <Cargo.Display products={this.state.ship.cargo} id={shipId} status={this.state.ship.status.value} city={this.state.ship.city}/>
