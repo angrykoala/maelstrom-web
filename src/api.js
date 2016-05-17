@@ -1,6 +1,5 @@
 var Api = {
-    //url:"127.0.0.1",
-    //port:"8080",
+    timeout: 3000,
     get: function(dir, done) {
         $.ajax({
             url: dir,
@@ -29,7 +28,23 @@ var Api = {
                 done(err);
             }
         });
-    }
+    },
+    getPoll:function(dir,done,timeout){
+            var time=timeout || this.timeout;
+            $.ajax({
+                url: dir,
+                type: "GET",
+                dataType: 'json',
+                cache: false,
+                success: function(data) {
+                    done(null,data);
+                },
+                error: function(xhr, status) {
+                    setTimeout(function(){
+                        this.getPoll(dir,done,timeout);
+                    }.bind(this),time);
+                }.bind(this)
+            });
+        }
 };
 module.exports = Api;
-window.Map = Api;

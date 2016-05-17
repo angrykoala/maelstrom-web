@@ -1,7 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Api = {
-    //url:"127.0.0.1",
-    //port:"8080",
+    timeout: 3000,
     get: function (dir, done) {
         $.ajax({
             url: dir,
@@ -30,10 +29,26 @@ var Api = {
                 done(err);
             }
         });
+    },
+    getPoll: function (dir, done, timeout) {
+        var time = timeout || this.timeout;
+        $.ajax({
+            url: dir,
+            type: "GET",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                done(null, data);
+            },
+            error: function (xhr, status) {
+                setTimeout(function () {
+                    this.getPoll(dir, done, timeout);
+                }.bind(this), time);
+            }.bind(this)
+        });
     }
 };
 module.exports = Api;
-window.Map = Api;
 
 },{}],2:[function(require,module,exports){
 var Utils = require('./utils.jsx');
@@ -484,7 +499,8 @@ module.exports = Cargo;
 
 },{}],4:[function(require,module,exports){
 var Utils = require('./utils.jsx');
-var Api = require('./api.js');
+var Api = require('../api.js');
+var Map = require('../map.js');
 var Dropdown = Utils.Dropdown;
 var Selection = Utils.Selection;
 
@@ -492,15 +508,10 @@ var MapLoad = {
     getInitialState: function () {
         return { map: [] };
     },
-    loadMap: function () {
-        Api.get(this.props.url, this.setMap);
-    },
-    setMap: function (err, data) {
-        if (err) console.log(err);else this.setState({ map: data });
-    },
-
     componentDidMount: function () {
-        this.loadMap();
+        Map.promise.then(function (data) {
+            this.setState({ map: Map.list });
+        }.bind(this));
     }
 };
 
@@ -525,7 +536,7 @@ var MapComponent = {
 
 module.exports = MapComponent;
 
-},{"./api.js":1,"./utils.jsx":7}],5:[function(require,module,exports){
+},{"../api.js":1,"../map.js":8,"./utils.jsx":7}],5:[function(require,module,exports){
 var AutoCounter = require('./utils.jsx').AutoCounter;
 var Cargo = require('./cargo.jsx');
 var Map = require('./map.jsx');
@@ -973,4 +984,44 @@ var Utils = {
 
 module.exports = Utils;
 
-},{}]},{},[2,3,4,5,6,7]);
+},{}],8:[function(require,module,exports){
+// Map handler
+var API = require('./api');
+
+function GameMap() {
+    this.list = [];
+    /*this.refreshCities=function(done){
+        $.ajax({
+            url: URLS.world + '/map',
+            type: "GET",
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                this.list = data;
+                done(null);
+            }.bind(this),
+            error: function(xhr, status) {
+                setTimeout(function(){
+                    this.refreshCities(done);
+                }.bind(this),3000);
+            }.bind(this)
+        });
+    };*/
+
+    this.promise = new Promise(function (resolve, reject) {
+        API.getPoll(URLS.world + '/map', function (err, data) {
+            if (err) {
+                console.log("ERROR");
+            } else {
+                console.log(data);
+                this.list = data;
+                resolve();
+            }
+        }.bind(this));
+    }.bind(this));
+}
+
+var Map = new GameMap();
+module.exports = Map;
+
+},{"./api":1}]},{},[2,3,4,5,6,7]);
