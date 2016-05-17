@@ -1,35 +1,34 @@
 {
-	"name": "maelstrom-web",
-	"version": "0.4.3",
-	"description": "Web client for Maelström",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node app.js",
-		"build_react": "browserify -t [ babelify --presets [ react ] ] src/components/*.jsx -o public/scripts/builds/components.js",
-		"beautify": "js-beautify --indent-with-tabs --brace-style collapse -r *.js config/*.js public/scripts/*.js src/*.js package.json"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/demiurgosoft/maelstrom-web.git"
-	},
-	"author": "demiurgosoft <demiurgosoft@hotmail.com>",
-	"license": "AGPL-3.0",
-	"bugs": {
-		"url": "https://github.com/demiurgosoft/maelstrom-web/issues"
-	},
-	"homepage": "https://github.com/demiurgosoft/maelstrom-web#readme",
-	"dependencies": {
-		"babel-preset-react": "^6.5.0",
-		"babelify": "^7.3.0",
-		"ejs": "^2.4.1",
-		"express": "^4.13.4",
-		"react": "^15.0.2",
-		"react-bootstrap": "^0.29.3",
-		"react-dom": "^15.0.2"
-	},
-	"devDependencies": {
-		"browserify": "^13.0.0",
-		"js-beautify": "^1.6.2"
-	}
+  "name": "maelstrom-web",
+  "version": "0.4.4",
+  "description": "Web client for Maelström",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "build_react": "browserify -t [ babelify --presets [ react ] ] src/components/*.jsx -o public/scripts/builds/components.js",
+    "beautify": "js-beautify --indent-with-tabs --brace-style collapse -r *.js config/*.js public/scripts/*.js src/*.js package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/demiurgosoft/maelstrom-web.git"
+  },
+  "author": "demiurgosoft <demiurgosoft@hotmail.com>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/demiurgosoft/maelstrom-web/issues"
+  },
+  "homepage": "https://github.com/demiurgosoft/maelstrom-web#readme",
+  "dependencies": {
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.3.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "js-beautify": "^1.6.2"
+  }
 }

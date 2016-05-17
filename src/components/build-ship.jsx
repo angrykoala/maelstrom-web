@@ -1,5 +1,6 @@
 var Utils=require('./utils.jsx');
 var Map=require('./map.jsx');
+var ShipModels=require('./../ship-models');
 
 var BuildButton = React.createClass({
     getInitialState: function() {
@@ -59,10 +60,12 @@ var BuildModal = React.createClass({
         }
     },
     componentDidMount: function() {
-        var m = ShipModels.list.map(function(val) {
-            return val.slug;
-        });
-        this.setState({models: m});
+        ShipModels.promise.then(function(){
+            var m = ShipModels.list.map(function(val) {
+                return val.slug;
+            });
+            this.setState({models: m});
+    }.bind(this));
     },
     render: function() {
         return (

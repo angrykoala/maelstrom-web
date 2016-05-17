@@ -54,6 +54,7 @@ module.exports = Api;
 },{}],2:[function(require,module,exports){
 var Utils = require('./utils.jsx');
 var Map = require('./map.jsx');
+var ShipModels = require('./../ship-models');
 
 var BuildButton = React.createClass({
     displayName: 'BuildButton',
@@ -129,10 +130,12 @@ var BuildModal = React.createClass({
         }
     },
     componentDidMount: function () {
-        var m = ShipModels.list.map(function (val) {
-            return val.slug;
-        });
-        this.setState({ models: m });
+        ShipModels.promise.then(function () {
+            var m = ShipModels.list.map(function (val) {
+                return val.slug;
+            });
+            this.setState({ models: m });
+        }.bind(this));
     },
     render: function () {
         return React.createElement(
@@ -222,7 +225,7 @@ ReactDOM.render(React.createElement(
     React.createElement(BuildButton, null)
 ), document.getElementById('build-button'));
 
-},{"./map.jsx":4,"./utils.jsx":7}],3:[function(require,module,exports){
+},{"./../ship-models":10,"./map.jsx":4,"./utils.jsx":7}],3:[function(require,module,exports){
 var Products = require('../products');
 
 var Cargo = React.createClass({
@@ -378,8 +381,7 @@ var ProductDisplay = React.createClass({
                     });
                 }.bind(this),
                 error: function (xhr, status, err) {
-                    var errmsg = xhr.responseJSON.error || "unknown Error";
-                    console.log(xhr.responseJSON);
+                    var errmsg = xhr.responseJSON.error || "";
                     this.setState({ eventMessage: "Error buying: " + errmsg });
                 }.bind(this)
             });
@@ -1031,5 +1033,26 @@ function GameProducts() {
 var Products = new GameProducts();
 
 module.exports = Products;
+
+},{"./api":1}],10:[function(require,module,exports){
+//Ship Models Handler
+var API = require('./api');
+
+function ShipModels() {
+	this.list = [];
+	this.promise = new Promise(function (resolve, reject) {
+		API.getPoll(URLS.world + '/ship_models', function (err, data) {
+			if (err) {
+				console.log("Ship Models ERROR");
+			} else {
+				this.list = data;
+				resolve();
+			}
+		}.bind(this));
+	}.bind(this));
+}
+
+var Ships = new ShipModels();
+module.exports = Ships;
 
 },{"./api":1}]},{},[2,3,4,5,6,7]);
