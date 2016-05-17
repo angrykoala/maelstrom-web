@@ -1,3 +1,5 @@
+var Products=require('../products');
+
 var Cargo = React.createClass({
     propTypes: {
         products: React.PropTypes.object.isRequired,
@@ -22,12 +24,12 @@ var Cargo = React.createClass({
             },*/
             cache: false,
             success: function(data) {
-                if(!Products.loaded) console.log("WARNING: Products not loaded");
-                else this.state.products=Products.list;
+                Products.promise.then(function(){
                 this.setState({
                     products: Products.list,
                     cityProducts: data
                 });
+                }.bind(this));
             }.bind(this),
             error: function(xhr, status, err) {
                 console.log("ERROR " + err);
@@ -125,9 +127,8 @@ var ProductDisplay = React.createClass({
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    var errmsg=xhr.responseJSON.error;
+                    var errmsg=xhr.responseJSON.error || "";
                     this.setState({eventMessage:"Error buying: " + errmsg});
-
                 }.bind(this)
             });
         }

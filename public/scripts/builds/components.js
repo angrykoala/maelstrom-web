@@ -1,52 +1,53 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Api = {
-    timeout: 3000,
-    get: function (dir, done) {
-        $.ajax({
-            url: dir,
-            type: "GET",
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                done(null, data);
-            },
-            error: function (xhr, status, err) {
-                done(err);
-            }
-        });
-    },
-    post: function (dir, data, done) {
-        $.ajax({
-            url: dir,
-            type: "POST",
-            dataType: 'json',
-            data: data,
-            cache: false,
-            success: function (data) {
-                done(null, data);
-            },
-            error: function (xhr, status, err) {
-                done(err);
-            }
-        });
-    },
-    getPoll: function (dir, done, timeout) {
-        var time = timeout || this.timeout;
-        $.ajax({
-            url: dir,
-            type: "GET",
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                done(null, data);
-            },
-            error: function (xhr, status) {
-                setTimeout(function () {
-                    this.getPoll(dir, done, timeout);
-                }.bind(this), time);
-            }.bind(this)
-        });
-    }
+	timeout: 3000,
+	get: function (dir, done) {
+		$.ajax({
+			url: dir,
+			type: "GET",
+			dataType: 'json',
+			cache: false,
+			success: function (data) {
+				done(null, data);
+			},
+			error: function (xhr, status, err) {
+				done(err);
+			}
+		});
+	},
+	post: function (dir, data, done) {
+		$.ajax({
+			url: dir,
+			type: "POST",
+			dataType: 'json',
+			data: data,
+			cache: false,
+			success: function (data) {
+				done(null, data);
+			},
+			error: function (xhr, status, err) {
+				done(err);
+			}
+		});
+	},
+	getPoll: function (dir, done, timeout, onError) {
+		var time = timeout || this.timeout;
+		$.ajax({
+			url: dir,
+			type: "GET",
+			dataType: 'json',
+			cache: false,
+			success: function (data) {
+				done(null, data);
+			},
+			error: function (xhr, status) {
+				setTimeout(function () {
+					this.getPoll(dir, done, timeout);
+				}.bind(this), time);
+				if (onError) onError(xhr.responseJSON);
+			}.bind(this)
+		});
+	}
 };
 module.exports = Api;
 
@@ -222,6 +223,8 @@ ReactDOM.render(React.createElement(
 ), document.getElementById('build-button'));
 
 },{"./map.jsx":4,"./utils.jsx":7}],3:[function(require,module,exports){
+var Products = require('../products');
+
 var Cargo = React.createClass({
     displayName: "Cargo",
 
@@ -248,11 +251,12 @@ var Cargo = React.createClass({
                         },*/
             cache: false,
             success: function (data) {
-                if (!Products.loaded) console.log("WARNING: Products not loaded");else this.state.products = Products.list;
-                this.setState({
-                    products: Products.list,
-                    cityProducts: data
-                });
+                Products.promise.then(function () {
+                    this.setState({
+                        products: Products.list,
+                        cityProducts: data
+                    });
+                }.bind(this));
             }.bind(this),
             error: function (xhr, status, err) {
                 console.log("ERROR " + err);
@@ -374,7 +378,8 @@ var ProductDisplay = React.createClass({
                     });
                 }.bind(this),
                 error: function (xhr, status, err) {
-                    var errmsg = xhr.responseJSON.error;
+                    var errmsg = xhr.responseJSON.error || "unknown Error";
+                    console.log(xhr.responseJSON);
                     this.setState({ eventMessage: "Error buying: " + errmsg });
                 }.bind(this)
             });
@@ -497,7 +502,7 @@ var ProductDisplay = React.createClass({
 
 module.exports = Cargo;
 
-},{}],4:[function(require,module,exports){
+},{"../products":9}],4:[function(require,module,exports){
 var Utils = require('./utils.jsx');
 var Api = require('../api.js');
 var Map = require('../map.js');
@@ -989,39 +994,42 @@ module.exports = Utils;
 var API = require('./api');
 
 function GameMap() {
-    this.list = [];
-    /*this.refreshCities=function(done){
-        $.ajax({
-            url: URLS.world + '/map',
-            type: "GET",
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
-                this.list = data;
-                done(null);
-            }.bind(this),
-            error: function(xhr, status) {
-                setTimeout(function(){
-                    this.refreshCities(done);
-                }.bind(this),3000);
-            }.bind(this)
-        });
-    };*/
-
-    this.promise = new Promise(function (resolve, reject) {
-        API.getPoll(URLS.world + '/map', function (err, data) {
-            if (err) {
-                console.log("ERROR");
-            } else {
-                console.log(data);
-                this.list = data;
-                resolve();
-            }
-        }.bind(this));
-    }.bind(this));
+	this.list = [];
+	this.promise = new Promise(function (resolve, reject) {
+		API.getPoll(URLS.world + '/map', function (err, data) {
+			if (err) {
+				console.log("GAME MAP ERROR");
+			} else {
+				this.list = data;
+				resolve();
+			}
+		}.bind(this));
+	}.bind(this));
 }
 
 var Map = new GameMap();
 module.exports = Map;
+
+},{"./api":1}],9:[function(require,module,exports){
+//Products handler
+var API = require('./api');
+
+function GameProducts() {
+	this.list = [];
+	this.promise = new Promise(function (resolve, reject) {
+		API.getPoll(URLS.world + '/products', function (err, data) {
+			if (err) {
+				console.log("GAME PRODUCTS ERROR");
+			} else {
+				this.list = data;
+				resolve();
+			}
+		}.bind(this));
+	}.bind(this));
+}
+
+var Products = new GameProducts();
+
+module.exports = Products;
 
 },{"./api":1}]},{},[2,3,4,5,6,7]);
