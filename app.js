@@ -18,19 +18,22 @@ app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
 	res.render('index', {
 		urls: urls,
-		tabs: true
+		tabs: true,
+		version:version
 	});
 });
 app.get('/signup', function(req, res) {
 	res.render('signup', {
 		urls: urls,
-		tabs: false
+		tabs: false,
+		version:version
 	});
 });
 app.get('/account', function(req, res) {
 	res.render('account', {
 		urls: urls,
-		tabs: false
+		tabs: false,
+		version:version
 	});
 });
 
