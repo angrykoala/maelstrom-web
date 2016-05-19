@@ -16,12 +16,12 @@ var MapLoad = {
 };
 
 var MapComponent = {
-    Dropdown: React.createClass({
+    /*Dropdown: React.createClass({
         mixins: [MapLoad],
         render: function() {
             return (<Dropdown elements={this.state.map} title="Map" onSelection={this.props.onSelection}/>);
         }
-    }),
+    }),*/
     Selection: React.createClass({
         mixins: [MapLoad],
         render: function() {

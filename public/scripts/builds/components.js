@@ -131,10 +131,10 @@ var BuildModal = React.createClass({
     },
     componentDidMount: function () {
         ShipModels.promise.then(function () {
-            var m = ShipModels.list.map(function (val) {
+            /*var m = ShipModels.list.map(function(val) {
                 return val.slug;
-            });
-            this.setState({ models: m });
+            });*/
+            this.setState({ models: ShipModels.list });
         }.bind(this));
     },
     render: function () {
@@ -523,14 +523,12 @@ var MapLoad = {
 };
 
 var MapComponent = {
-    Dropdown: React.createClass({
-        displayName: 'Dropdown',
-
+    /*Dropdown: React.createClass({
         mixins: [MapLoad],
-        render: function () {
-            return React.createElement(Dropdown, { elements: this.state.map, title: 'Map', onSelection: this.props.onSelection });
+        render: function() {
+            return (<Dropdown elements={this.state.map} title="Map" onSelection={this.props.onSelection}/>);
         }
-    }),
+    }),*/
     Selection: React.createClass({
         displayName: 'Selection',
 
@@ -931,8 +929,8 @@ var Utils = {
             var elements = this.props.elements.map(function (elem) {
                 return React.createElement(
                     "option",
-                    { value: elem },
-                    elem
+                    { value: elem.slug },
+                    elem.name
                 );
             });
             return(

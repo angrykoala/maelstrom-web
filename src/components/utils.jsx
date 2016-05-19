@@ -39,7 +39,7 @@ var Utils = {
             var cb = this.props.onSelection;
             var elements = this.props.elements.map(function(elem) {
                 return (
-                    <option value={elem}>{elem}</option>
+                    <option value={elem.slug}>{elem.name}</option>
                 );
             });
             return (

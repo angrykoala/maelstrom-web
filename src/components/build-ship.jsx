@@ -61,10 +61,7 @@ var BuildModal = React.createClass({
     },
     componentDidMount: function() {
         ShipModels.promise.then(function(){
-            var m = ShipModels.list.map(function(val) {
-                return val.slug;
-            });
-            this.setState({models: m});
+            this.setState({models: ShipModels.list});
     }.bind(this));
     },
     render: function() {
