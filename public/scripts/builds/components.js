@@ -131,9 +131,6 @@ var BuildModal = React.createClass({
     },
     componentDidMount: function () {
         ShipModels.promise.then(function () {
-            /*var m = ShipModels.list.map(function(val) {
-                return val.slug;
-            });*/
             this.setState({ models: ShipModels.list });
         }.bind(this));
     },
@@ -545,6 +542,7 @@ module.exports = MapComponent;
 var AutoCounter = require('./utils.jsx').AutoCounter;
 var Cargo = require('./cargo.jsx');
 var Map = require('./map.jsx');
+var GameMap = require('../map');
 
 var ShipLoad = {
     getInitialState: function () {
@@ -554,7 +552,8 @@ var ShipLoad = {
                 status: "",
                 cargo: {}
             },
-            loaded: false
+            loaded: false,
+            cityName: ""
         };
     },
     loadShip: function (shipId) {
@@ -580,6 +579,9 @@ var ShipLoad = {
     setShip: function (err, data) {
         if (err) console.log(err);else {
             this.setState({ ship: data, loaded: true });
+            GameMap.promise.then(function () {
+                this.setState({ cityName: GameMap.names[data.city] || data.city });
+            }.bind(this));
         }
     },
     componentWillReceiveProps: function (props) {
@@ -681,7 +683,7 @@ var Modal = React.createClass({
                     'p',
                     null,
                     'City: ',
-                    this.state.ship.city
+                    this.state.cityName
                 ),
                 React.createElement(
                     'p',
@@ -751,7 +753,7 @@ var Modal = React.createClass({
 
 module.exports = Modal;
 
-},{"./cargo.jsx":3,"./map.jsx":4,"./utils.jsx":7}],6:[function(require,module,exports){
+},{"../map":8,"./cargo.jsx":3,"./map.jsx":4,"./utils.jsx":7}],6:[function(require,module,exports){
 var ShipModal = require('./ship-modal.jsx');
 
 var ShipsLoad = {
@@ -993,14 +995,24 @@ module.exports = Utils;
 // Map handler
 var API = require('./api');
 
+function getIndex(l) {
+	var ind = {};
+	for (var i = 0; i < l.length; i++) {
+		ind[l[i].slug] = l[i].name;
+	}
+	return ind;
+}
+
 function GameMap() {
 	this.list = [];
+	this.names = {};
 	this.promise = new Promise(function (resolve, reject) {
 		API.getPoll(URLS.world + '/map', function (err, data) {
 			if (err) {
 				console.log("GAME MAP ERROR");
 			} else {
 				this.list = data;
+				this.names = getIndex(this.list);
 				resolve();
 			}
 		}.bind(this));

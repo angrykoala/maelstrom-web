@@ -1,6 +1,7 @@
 var AutoCounter=require('./utils.jsx').AutoCounter;
 var Cargo=require('./cargo.jsx');
 var Map=require('./map.jsx');
+var GameMap=require('../map');
 
 var ShipLoad = {
     getInitialState: function() {
@@ -11,6 +12,7 @@ var ShipLoad = {
                 cargo: {}
             },
             loaded: false,
+            cityName: ""
         };
     },
     loadShip: function(shipId) {
@@ -37,7 +39,10 @@ var ShipLoad = {
         if (err)
             console.log(err);
         else {
-            this.setState({ship: data, loaded: true});
+        this.setState({ship: data, loaded: true});
+        GameMap.promise.then(function(){
+            this.setState({cityName: GameMap.names[data.city] || data.city});
+        }.bind(this));
         }
     },
     componentWillReceiveProps: function(props) {
@@ -103,7 +108,7 @@ var Modal = React.createClass({
                 <p>Life: {this.state.ship.life}</p>
                 <p>Status: {this.state.ship.status.value}</p>
                 {remaining}
-                <p>City: {this.state.ship.city}</p>
+                <p>City: {this.state.cityName}</p>
                 <p>Move To</p>
                 <Map.Selection url={URLS.world+"/map"} onSelection={this.moveTo}/>
                 {alert}
