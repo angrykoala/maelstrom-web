@@ -5,10 +5,11 @@ $(document).ready(function() {
 		var formURL = $(this).attr("action");
 		User.login(postData, function(err) {
 			if (!err) {
+				$('#login-err').text("");
 				window.location.href = '/';
 				$('#login-button').popover('hide');
 			} else {
-				console.log(err);
+				$('#login-err').text(err);
 			}
 		});
 	});
