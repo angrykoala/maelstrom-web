@@ -47,6 +47,28 @@ var Api = {
 				if (onError) onError(xhr.responseJSON);
 			}.bind(this)
 		});
+	},
+	getPollAuth: function (dir, done, onError) {
+		var token = User.getToken();
+		var time = this.timeout;
+		$.ajax({
+			url: dir,
+			type: "GET",
+			dataType: 'json',
+			headers: {
+				'Authorization': 'Bearer ' + token
+			},
+			cache: false,
+			success: function (data) {
+				done(null, data);
+			},
+			error: function (xhr, status) {
+				setTimeout(function () {
+					this.getPollAuth(dir, done, time);
+				}.bind(this), time);
+				if (onError) onError(xhr.responseJSON);
+			}.bind(this)
+		});
 	}
 };
 module.exports = Api;
@@ -378,7 +400,7 @@ var ProductDisplay = React.createClass({
                     });
                 }.bind(this),
                 error: function (xhr, status, err) {
-                    var errmsg = xhr.responseJSON.error || "";
+                    var errmsg = JSON.stringify(xhr.responseJSON.error) || "";
                     this.setState({ eventMessage: "Error buying: " + errmsg });
                 }.bind(this)
             });
@@ -755,6 +777,7 @@ module.exports = Modal;
 
 },{"../map":8,"./cargo.jsx":3,"./map.jsx":4,"./utils.jsx":7}],6:[function(require,module,exports){
 var ShipModal = require('./ship-modal.jsx');
+var Api = require('../api.js');
 
 var ShipsLoad = {
     getInitialState: function () {
@@ -763,23 +786,7 @@ var ShipsLoad = {
     loadAllShips: function () {
         if (User.logged()) {
             //var cb = this.setShips;
-            var token = User.getToken();
-            $.ajax({
-                url: URLS.world + "/user/ships",
-                type: "GET",
-                dataType: 'json',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                cache: false,
-                success: function (data) {
-                    this.setShips(null, data);
-                }.bind(this),
-                error: function (xhr, status, err) {
-                    console.log("Error loading ships");
-                    setTimeout(this.loadAllShips, 3000);
-                }.bind(this)
-            });
+            Api.getPollAuth(URLS.world + "/user/ships", this.setShips);
         }
     },
     setShips: function (err, data) {
@@ -794,7 +801,7 @@ var ShipsLoad = {
 };
 
 var ShipList = React.createClass({
-    displayName: "ShipList",
+    displayName: 'ShipList',
 
     mixins: [ShipsLoad],
     setModal: function (id, name) {
@@ -802,24 +809,24 @@ var ShipList = React.createClass({
     },
     render: function () {
         var setModal = this.setModal;
-        var elements = React.createElement("img", { src: "images/ajax-loader.gif", alt: "Loading", width: "42", height: "42", className: "loading-img" });
+        var elements = React.createElement('img', { src: 'images/ajax-loader.gif', alt: 'Loading', width: '42', height: '42', className: 'loading-img' });
         var url = URLS.world + "/user/ship";
         if (this.state.loaded) {
             elements = this.state.ships.map(function (elem) {
                 return React.createElement(
-                    "div",
-                    { className: "col-sm-6" },
+                    'div',
+                    { className: 'col-sm-6' },
                     React.createElement(ShipDisplay, { name: elem.name, model: elem.model, life: elem.life, id: elem.slug, onClick: setModal })
                 );
             });
             if (!elements || elements.length === 0) elements = "No Ships";
         }
         return React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-                "div",
-                { className: "row" },
+                'div',
+                { className: 'row' },
                 elements
             ),
             React.createElement(ShipModal, { url: url, id: this.state.id, name: this.state.name })
@@ -828,7 +835,7 @@ var ShipList = React.createClass({
 });
 
 var ShipDisplay = React.createClass({
-    displayName: "ShipDisplay",
+    displayName: 'ShipDisplay',
 
     propTypes: {
         name: React.PropTypes.string.isRequired,
@@ -843,22 +850,22 @@ var ShipDisplay = React.createClass({
     },
     render: function () {
         return React.createElement(
-            "button",
-            { type: "button", className: "well btn-default", "data-toggle": "modal", "data-target": "#ship-modal", onClick: this.handleClick },
+            'button',
+            { type: 'button', className: 'well btn-default', 'data-toggle': 'modal', 'data-target': '#ship-modal', onClick: this.handleClick },
             React.createElement(
-                "h4",
+                'h4',
                 null,
                 this.props.name + " ",
                 React.createElement(
-                    "small",
+                    'small',
                     null,
                     this.props.model
                 )
             ),
             React.createElement(
-                "p",
+                'p',
                 null,
-                "Life: ",
+                'Life: ',
                 this.props.life
             )
         );
@@ -870,12 +877,12 @@ var ShipsComponent = {
 //module.exports=ShipsComponent;
 
 ReactDOM.render(React.createElement(
-    "div",
+    'div',
     null,
     React.createElement(ShipList, null)
 ), document.getElementById('ship-list'));
 
-},{"./ship-modal.jsx":5}],7:[function(require,module,exports){
+},{"../api.js":1,"./ship-modal.jsx":5}],7:[function(require,module,exports){
 var Utils = {
     Dropdown: React.createClass({
         displayName: "Dropdown",

@@ -1,4 +1,5 @@
 var ShipModal=require('./ship-modal.jsx');
+var Api=require('../api.js');
 
 var ShipsLoad = {
     getInitialState: function() {
@@ -7,23 +8,7 @@ var ShipsLoad = {
     loadAllShips: function() {
         if (User.logged()) {
             //var cb = this.setShips;
-            var token = User.getToken();
-            $.ajax({
-                url: URLS.world+"/user/ships",
-                type: "GET",
-                dataType: 'json',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                cache: false,
-                success: function(data) {
-                    this.setShips(null, data);
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    console.log("Error loading ships");
-                    setTimeout(this.loadAllShips,3000);
-                }.bind(this)
-            });
+            Api.getPollAuth(URLS.world+"/user/ships",this.setShips);
         }
     },
     setShips: function(err, data) {

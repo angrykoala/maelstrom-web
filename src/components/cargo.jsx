@@ -127,7 +127,7 @@ var ProductDisplay = React.createClass({
                     });
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    var errmsg=xhr.responseJSON.error || "";
+                    var errmsg=JSON.stringify(xhr.responseJSON.error) || "";
                     this.setState({eventMessage:"Error buying: " + errmsg});
                 }.bind(this)
             });

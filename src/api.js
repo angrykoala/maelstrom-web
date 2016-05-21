@@ -46,6 +46,29 @@ var Api = {
 				if (onError) onError(xhr.responseJSON);
 			}.bind(this)
 		});
+	},
+	getPollAuth: function(dir,done,onError){
+		var token = User.getToken();
+		var time = this.timeout;
+		$.ajax({
+			url: dir,
+			type: "GET",
+			dataType: 'json',
+			headers: {
+				'Authorization': 'Bearer ' + token
+			},
+			cache: false,
+			success: function(data) {
+				done(null, data);
+			},
+			error: function(xhr, status) {
+				setTimeout(function() {
+					this.getPollAuth(dir, done, time);
+				}.bind(this), time);
+				if (onError) onError(xhr.responseJSON);
+			}.bind(this)
+		});
+
 	}
 };
 module.exports = Api;
