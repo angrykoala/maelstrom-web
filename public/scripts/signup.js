@@ -2,11 +2,12 @@
 $(document).ready(function() {
 	$('#signup-form').submit(function(e) {
 		e.preventDefault(); //STOP default action
+		$('#signup-err').text('');
 		var postData = $(this).serializeArray();
 		var formURL = $(this).attr("action");
-		User.signup(postData, function(res) {
-			console.log(res);
-			window.location.href = '/';
+		User.signup(postData, function(err) {
+			if(err) $('#signup-err').text(err);
+			else window.location.href = '/';
 		});
 	});
 });
