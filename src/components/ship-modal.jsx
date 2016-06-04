@@ -90,6 +90,9 @@ var Modal = React.createClass({
         this.setState({loaded: false});
         this.loadShip(this.state.ship.slug);
     },
+    onClose: function(){
+        console.log("Modal close");
+    },
     render: function() {
         var shipId = this.props.id || "null";
         var bodyContent;

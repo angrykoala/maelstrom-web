@@ -20,7 +20,7 @@ var ShipsLoad = {
     },
     componentDidMount: function() {
         this.loadAllShips();
-        addSocketEvent('ship_built',this.loadAllShips);
+        Api.socketOn('ship_built',this.loadAllShips);
     }
 };
 

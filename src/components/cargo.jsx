@@ -1,4 +1,5 @@
 var Products=require('../products');
+var Api=require('../api');
 
 var Cargo = React.createClass({
     propTypes: {
@@ -36,13 +37,23 @@ var Cargo = React.createClass({
                 console.log("  " + JSON.stringify(xhr));
             }.bind(this)
         });
-
-
+    },
+    updateProducts: function(data){
+        console.log("Update Products: "+JSON.stringify(data));
+        this.setState({cityProducts: data});
     },
     componentDidMount: function() {
     if(this.state.docked) this.getCityDetails();
+    Api.socketEmit('bind-city',this.props.city);
+    Api.socketHandler.onCityUpdate=function(data){
+        if(data.city===this.props.city) this.updateProducts(data.products);
+    }.bind(this)
+  },
+  componentWillUnmount: function(){
+    Api.socketEmit('unbind-city',this.props.city);
   },
     render: function() {
+        console.log("render");
         var elements = [];
         if(!this.state.docked){
             for (var elem in this.props.products) {
@@ -58,7 +69,8 @@ var Cargo = React.createClass({
                 var shipq=shipProd[elem] || 0;
                 var cityq=cityProd[elem].quantity || 0;
                 var price=cityProd[elem].price || 0;
-                elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq} price={price}/>);
+                console.log(elem+"--"+cityq);
+                elements.push(<ProductDisplay name={elem} quantity={shipq} shipId={shipId} docked={dock} cityQuantity={cityq} price={Math.round(price)}/>);
             });
         }
         return (
@@ -90,6 +102,7 @@ var ProductDisplay = React.createClass({
         cityQuantity: React.PropTypes.number
     },
     getInitialState: function() {
+        console.log("Initial state");
         return {value: null, quantity: this.props.quantity, cityq:this.props.cityQuantity,eventMessage:""};
     },
     handleChange: function(event) {
@@ -168,7 +181,11 @@ var ProductDisplay = React.createClass({
             });
         }
     },
+    componentWillReceiveProps:function(newProps){
+        this.setState({cityq:newProps.cityQuantity || this.props.cityQuantity});
+    },
     render: function() {
+        console.log("Product Display Render");
         var actionButtons;
         var cityProduct;
         if (this.props.docked) {

@@ -1,3 +1,5 @@
+socketHandler=require('./socket-handler');
+
 var Api = {
 	timeout: 3000,
 	get: function(dir, done) {
@@ -68,7 +70,9 @@ var Api = {
 				if (onError) onError(xhr.responseJSON);
 			}.bind(this)
 		});
-
-	}
+	},
+	socketOn:socketHandler.socketOn,
+	socketEmit:socketHandler.emit,
+	socketHandler: socketHandler
 };
 module.exports = Api;

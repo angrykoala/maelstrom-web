@@ -1,4 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+socketHandler = require('./socket-handler');
+
 var Api = {
 	timeout: 3000,
 	get: function (dir, done) {
@@ -69,11 +71,14 @@ var Api = {
 				if (onError) onError(xhr.responseJSON);
 			}.bind(this)
 		});
-	}
+	},
+	socketOn: socketHandler.socketOn,
+	socketEmit: socketHandler.emit,
+	socketHandler: socketHandler
 };
 module.exports = Api;
 
-},{}],2:[function(require,module,exports){
+},{"./socket-handler":11}],2:[function(require,module,exports){
 var Utils = require('./utils.jsx');
 var Map = require('./map.jsx');
 var ShipModels = require('./../ship-models');
@@ -246,9 +251,10 @@ ReactDOM.render(React.createElement(
 
 },{"./../ship-models":10,"./map.jsx":4,"./utils.jsx":7}],3:[function(require,module,exports){
 var Products = require('../products');
+var Api = require('../api');
 
 var Cargo = React.createClass({
-    displayName: "Cargo",
+    displayName: 'Cargo',
 
     propTypes: {
         products: React.PropTypes.object.isRequired,
@@ -286,10 +292,22 @@ var Cargo = React.createClass({
             }.bind(this)
         });
     },
+    updateProducts: function (data) {
+        console.log("Update Products: " + JSON.stringify(data));
+        this.setState({ cityProducts: data });
+    },
     componentDidMount: function () {
         if (this.state.docked) this.getCityDetails();
+        Api.socketEmit('bind-city', this.props.city);
+        Api.socketHandler.onCityUpdate = function (data) {
+            if (data.city === this.props.city) this.updateProducts(data.products);
+        }.bind(this);
+    },
+    componentWillUnmount: function () {
+        Api.socketEmit('unbind-city', this.props.city);
     },
     render: function () {
+        console.log("render");
         var elements = [];
         if (!this.state.docked) {
             for (var elem in this.props.products) {
@@ -304,47 +322,48 @@ var Cargo = React.createClass({
                 var shipq = shipProd[elem] || 0;
                 var cityq = cityProd[elem].quantity || 0;
                 var price = cityProd[elem].price || 0;
-                elements.push(React.createElement(ProductDisplay, { name: elem, quantity: shipq, shipId: shipId, docked: dock, cityQuantity: cityq, price: price }));
+                console.log(elem + "--" + cityq);
+                elements.push(React.createElement(ProductDisplay, { name: elem, quantity: shipq, shipId: shipId, docked: dock, cityQuantity: cityq, price: Math.round(price) }));
             });
         }
         return React.createElement(
-            "table",
-            { className: "table table-hover" },
+            'table',
+            { className: 'table table-hover' },
             React.createElement(
-                "thead",
+                'thead',
                 null,
                 React.createElement(
-                    "tr",
+                    'tr',
                     null,
                     React.createElement(
-                        "th",
-                        { className: "text-center" },
-                        "Product"
+                        'th',
+                        { className: 'text-center' },
+                        'Product'
                     ),
                     React.createElement(
-                        "th",
-                        { className: "text-center" },
-                        "Ship"
+                        'th',
+                        { className: 'text-center' },
+                        'Ship'
                     ),
                     React.createElement(
-                        "th",
-                        { className: "text-center" },
-                        "Actions"
+                        'th',
+                        { className: 'text-center' },
+                        'Actions'
                     ),
                     React.createElement(
-                        "th",
-                        { className: "text-center" },
-                        "City"
+                        'th',
+                        { className: 'text-center' },
+                        'City'
                     ),
                     React.createElement(
-                        "th",
-                        { className: "text-center" },
-                        "Price"
+                        'th',
+                        { className: 'text-center' },
+                        'Price'
                     )
                 )
             ),
             React.createElement(
-                "tbody",
+                'tbody',
                 null,
                 elements
             )
@@ -353,7 +372,7 @@ var Cargo = React.createClass({
 });
 
 var ProductDisplay = React.createClass({
-    displayName: "ProductDisplay",
+    displayName: 'ProductDisplay',
 
     propTypes: {
         name: React.PropTypes.string.isRequired,
@@ -364,6 +383,7 @@ var ProductDisplay = React.createClass({
         cityQuantity: React.PropTypes.number
     },
     getInitialState: function () {
+        console.log("Initial state");
         return { value: null, quantity: this.props.quantity, cityq: this.props.cityQuantity, eventMessage: "" };
     },
     handleChange: function (event) {
@@ -441,79 +461,83 @@ var ProductDisplay = React.createClass({
             });
         }
     },
+    componentWillReceiveProps: function (newProps) {
+        this.setState({ cityq: newProps.cityQuantity || this.props.cityQuantity });
+    },
     render: function () {
+        console.log("Product Display Render");
         var actionButtons;
         var cityProduct;
         if (this.props.docked) {
             actionButtons = React.createElement(
-                "div",
-                { className: "btn-group" },
+                'div',
+                { className: 'btn-group' },
                 React.createElement(
-                    "button",
-                    { type: "button", className: "btn btn-default", onClick: this.buy },
-                    "Buy"
+                    'button',
+                    { type: 'button', className: 'btn btn-default', onClick: this.buy },
+                    'Buy'
                 ),
                 React.createElement(
-                    "button",
-                    { type: "button", className: "btn btn-default", onClick: this.sell },
-                    "Sell"
+                    'button',
+                    { type: 'button', className: 'btn btn-default', onClick: this.sell },
+                    'Sell'
                 )
             );
 
             cityProduct = this.state.cityq || 0;
         } else {
             actionButtons = React.createElement(
-                "div",
-                { className: "btn-group" },
+                'div',
+                { className: 'btn-group' },
                 React.createElement(
-                    "button",
-                    { type: "button", className: "btn btn-default", onClick: this.buy, disabled: true },
-                    "Buy"
+                    'button',
+                    { type: 'button', className: 'btn btn-default', onClick: this.buy, disabled: true },
+                    'Buy'
                 ),
                 React.createElement(
-                    "button",
-                    { type: "button", className: "btn btn-default", onClick: this.sell, disabled: true },
-                    "Sell"
+                    'button',
+                    { type: 'button', className: 'btn btn-default', onClick: this.sell, disabled: true },
+                    'Sell'
                 )
             );
 
             cityProduct = "";
         }
         return React.createElement(
-            "tr",
+            'tr',
             null,
             React.createElement(
-                "td",
+                'td',
                 null,
                 this.props.name
             ),
             React.createElement(
-                "td",
+                'td',
                 null,
                 this.state.quantity
             ),
             React.createElement(
-                "td",
+                'td',
                 null,
                 React.createElement(
-                    "form",
-                    { role: "form" },
-                    React.createElement("input", { type: "number", min: "0", value: this.state.value, onChange: this.handleChange, className: "form-control input-sm" })
+                    'form',
+                    { role: 'form' },
+                    React.createElement('input', { type: 'number', min: '0', value: this.state.value, onChange: this.handleChange, className: 'form-control input-sm' })
                 ),
                 actionButtons,
                 React.createElement(
-                    "p",
-                    { className: "text-danger" },
+                    'p',
+                    { className: 'text-danger' },
                     this.state.eventMessage
                 )
             ),
             React.createElement(
-                "td",
+                'td',
                 null,
                 cityProduct
             ),
             React.createElement(
-                "td",
+                'td',
                 null,
                 this.props.price
             )
@@ -523,7 +547,7 @@ var ProductDisplay = React.createClass({
 
 module.exports = Cargo;
 
-},{"../products":9}],4:[function(require,module,exports){
+},{"../api":1,"../products":9}],4:[function(require,module,exports){
 var Utils = require('./utils.jsx');
 var Api = require('../api.js');
 var Map = require('../map.js');
@@ -661,6 +685,9 @@ var Modal = React.createClass({
         this.setState({ loaded: false });
         this.loadShip(this.state.ship.slug);
     },
+    onClose: function () {
+        console.log("Modal close");
+    },
     render: function () {
         var shipId = this.props.id || "null";
         var bodyContent;
@@ -796,7 +823,7 @@ var ShipsLoad = {
     },
     componentDidMount: function () {
         this.loadAllShips();
-        addSocketEvent('ship_built', this.loadAllShips);
+        Api.socketOn('ship_built', this.loadAllShips);
     }
 };
 
@@ -1072,4 +1099,40 @@ function ShipModels() {
 var Ships = new ShipModels();
 module.exports = Ships;
 
-},{"./api":1}]},{},[2,3,4,5,6,7]);
+},{"./api":1}],11:[function(require,module,exports){
+var socket = io.connect(URLS.world, {
+	'query': 'token=' + User.getToken()
+});
+
+//On socket conenction
+socket.on('connect', function () {
+	console.log("socket connected auth");
+});
+socket.on('error', function () {
+	console.log("Error");
+});
+socket.on('money', function (msg) {
+	$(".money_display").text(msg);
+});
+socket.on('ship_arrive', function (msg) {
+	console.log("Ship arrive " + msg);
+});
+
+var socketAPI = {
+	socketOn: function (eventName, cb) {
+		socket.on(eventName, cb);
+	},
+	emit: function (eventName, msg) {
+		socket.emit(eventName, msg);
+	},
+	onCityUpdate: function (data) {}
+};
+
+socket.on('city-update', function (data) {
+	//console.log('city_update '+JSON.stringify(data));
+	socketAPI.onCityUpdate(data);
+});
+
+module.exports = socketAPI;
+
+},{}]},{},[2,3,4,5,6,7]);
