@@ -204,7 +204,7 @@ var ProductDisplay = React.createClass({
             cityProduct="";
         }
         return (
-            <tr>
+            <tr className="product-item">
                 <td>{this.props.name}</td>
                 <td>{this.state.quantity}</td>
                 <td>

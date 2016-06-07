@@ -1,0 +1,22 @@
+.modal-content{
+    background-image: url("/images/paper_background.jpg");
+}
+.product-item:hover td{
+    background-color: rgba(222,184,135,0.6) !important;
+}
+.modal-content input{
+    background-color: rgba(222,184,135,0.3);
+}
+
+.modal-content .form-control{
+    background-color: rgba(222,184,135,0.3);
+}
+
+.modal-content .btn-default{
+    background-color: rgba(179, 134, 0,0.4);
+}
+
+.modal-content .btn-primary{
+    background-color: rgba(128, 96, 0,0.4);
+    color: black;
+}

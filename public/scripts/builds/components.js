@@ -505,7 +505,7 @@ var ProductDisplay = React.createClass({
         }
         return React.createElement(
             'tr',
-            null,
+            { className: 'product-item' },
             React.createElement(
                 'td',
                 null,
