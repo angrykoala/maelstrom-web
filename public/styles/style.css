@@ -20,3 +20,21 @@
     background-color: rgba(128, 96, 0,0.4);
     color: black;
 }
+.game-content{
+    background-image: url("/images/paper_background.jpg"); 
+}
+.game-header{
+    background-image: url("/images/wood_background.jpg");
+}
+.ship-icon{
+    background-image: url("/images/ship_background.jpg");
+    background-position: center;
+    background-size: 100% auto;
+}
+.ship-icon:active {
+   box-shadow: none;
+}
+
+body{
+    background-image: url("/images/sea_background.jpg");
+}

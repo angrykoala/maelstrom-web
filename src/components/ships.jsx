@@ -69,7 +69,7 @@ var ShipDisplay = React.createClass({
     },
     render: function() {
         return (
-            <button type="button" className="well btn-default" data-toggle="modal" data-target="#ship-modal" onClick={this.handleClick}>
+            <button type="button" className="well btn-default ship-icon" data-toggle="modal" data-target="#ship-modal" onClick={this.handleClick}>
                 <h4>{this.props.name + " "}
                     <small>{this.props.model}</small>
                 </h4>
