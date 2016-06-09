@@ -974,10 +974,10 @@ var Utils = {
                 //        <div className="form-group">
                 React.createElement(
                     "select",
-                    { className: "form-control", id: this.props.title + "sel", onChange: this.onSelectionWrapper, title: this.props.title, defaultValue: this.props.title },
+                    { className: "form-control", id: this.props.title + "sel", onChange: this.onSelectionWrapper, title: this.props.title },
                     React.createElement(
                         "option",
-                        { disabled: true },
+                        { disabled: true, selected: true },
                         this.props.title
                     ),
                     elements

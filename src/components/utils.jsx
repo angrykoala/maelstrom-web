@@ -45,8 +45,8 @@ var Utils = {
             return (
             //    <form role="form">
             //        <div className="form-group">
-                        <select className="form-control" id={this.props.title + "sel"} onChange={this.onSelectionWrapper} title={this.props.title} defaultValue={this.props.title}>
-                            <option disabled>
+                        <select className="form-control" id={this.props.title + "sel"} onChange={this.onSelectionWrapper} title={this.props.title}>
+                            <option disabled selected>
                                 {this.props.title}
                             </option>
                             {elements}
