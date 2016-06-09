@@ -53,7 +53,6 @@ var Cargo = React.createClass({
     Api.socketEmit('unbind-city',this.props.city);
   },
     render: function() {
-        console.log("render");
         var elements = [];
         if(!this.state.docked){
             for (var elem in this.props.products) {

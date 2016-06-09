@@ -1,4 +1,5 @@
 socketHandler=require('./socket-handler');
+var User=require('./user');
 
 var Api = {
 	timeout: 3000,

@@ -1,3 +1,5 @@
+var User=require('./user');
+
 var socket = io.connect(URLS.world, {
 	'query': 'token=' + User.getToken()
 });

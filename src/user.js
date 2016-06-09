@@ -76,3 +76,6 @@ User = {
 		Nav.setTabs();
 	}
 };
+
+window.User=User;
+module.exports=User;

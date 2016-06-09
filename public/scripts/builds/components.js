@@ -1,5 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 socketHandler = require('./socket-handler');
+var User = require('./user');
 
 var Api = {
 	timeout: 3000,
@@ -78,10 +79,11 @@ var Api = {
 };
 module.exports = Api;
 
-},{"./socket-handler":11}],2:[function(require,module,exports){
+},{"./socket-handler":11,"./user":12}],2:[function(require,module,exports){
 var Utils = require('./utils.jsx');
 var Map = require('./map.jsx');
 var ShipModels = require('./../ship-models');
+var User = require('./../user');
 
 var BuildButton = React.createClass({
     displayName: 'BuildButton',
@@ -92,7 +94,7 @@ var BuildButton = React.createClass({
     render: function () {
         var modal = "";
         if (this.state.clicked) modal = React.createElement('buildModal', null);
-
+        if (!User.logged()) return React.createElement('div', null);
         return React.createElement(
             'div',
             null,
@@ -249,7 +251,7 @@ ReactDOM.render(React.createElement(
     React.createElement(BuildButton, null)
 ), document.getElementById('build-button'));
 
-},{"./../ship-models":10,"./map.jsx":4,"./utils.jsx":7}],3:[function(require,module,exports){
+},{"./../ship-models":10,"./../user":12,"./map.jsx":4,"./utils.jsx":7}],3:[function(require,module,exports){
 var Products = require('../products');
 var Api = require('../api');
 
@@ -1100,6 +1102,8 @@ var Ships = new ShipModels();
 module.exports = Ships;
 
 },{"./api":1}],11:[function(require,module,exports){
+var User = require('./user');
+
 var socket = io.connect(URLS.world, {
 	'query': 'token=' + User.getToken()
 });
@@ -1134,5 +1138,87 @@ socket.on('city-update', function (data) {
 });
 
 module.exports = socketAPI;
+
+},{"./user":12}],12:[function(require,module,exports){
+User = {
+	url: URLS.user,
+	getToken: function () {
+		return localStorage.token;
+	},
+	logged: function () {
+		if (localStorage.token) return true;else return false;
+	},
+	setToken: function (token) {
+		localStorage.token = token;
+	},
+	login: function (data, done) {
+		var setToken = this.setToken;
+		$.ajax({
+			url: this.url + "/login",
+			type: "POST",
+			data: data,
+			dataType: 'json',
+			success: function (data, textStatus, jqXHR) {
+				setToken(data.token);
+				Nav.setUserButtons();
+				Nav.setTabs();
+
+				//TODO: check world login
+				done();
+			},
+			error: function (res) {
+				done(res.responseJSON.error);
+			}
+		});
+	},
+	signup: function (data, done) {
+		var setToken = this.setToken;
+		var wsign = this.worldSignup;
+		$.ajax({
+			url: this.url + "/signup",
+			type: "POST",
+			data: data,
+			dataType: 'json',
+			success: function (data, textStatus, jqXHR) {
+				setToken(data.token);
+				wsign();
+				Nav.setUserButtons();
+				Nav.setTabs();
+				//ShipList.loadShips();
+				done();
+			},
+			error: function (res) {
+				done(res.responseJSON.error);
+			}
+		});
+	},
+	worldSignup: function () {
+		var token = localStorage.token; //this.getToken wont work idk why
+		$.ajax({
+			url: URLS.world + "/user/signup",
+			type: "POST",
+			data: token,
+			headers: {
+				'Authorization': 'Bearer ' + token
+			},
+			dataType: 'json',
+			success: function (data, textStatus, jqXHR) {
+				console.log("User Logged on World Server");
+			},
+			error: function (res) {
+				console.log(res.responseJSON.error);
+			}
+		});
+	},
+	logout: function () {
+		localStorage.removeItem("token");
+		this.token = undefined;
+		Nav.setUserButtons();
+		Nav.setTabs();
+	}
+};
+
+window.User = User;
+module.exports = User;
 
 },{}]},{},[2,3,4,5,6,7]);

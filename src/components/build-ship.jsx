@@ -1,6 +1,7 @@
 var Utils=require('./utils.jsx');
 var Map=require('./map.jsx');
 var ShipModels=require('./../ship-models');
+var User=require('./../user');
 
 var BuildButton = React.createClass({
     getInitialState: function() {
@@ -10,7 +11,7 @@ var BuildButton = React.createClass({
         var modal = "";
         if (this.state.clicked)
             modal = <buildModal/>
-
+            if(!User.logged()) return (<div></div>);
         return (
             <div>
                 <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#build-modal">Build Ship</button>
