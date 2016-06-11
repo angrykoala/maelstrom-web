@@ -77,5 +77,5 @@ User = {
 	}
 };
 
-window.User=User;
-module.exports=User;
+window.User = User;
+module.exports = User;

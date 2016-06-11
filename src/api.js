@@ -1,5 +1,5 @@
-socketHandler=require('./socket-handler');
-var User=require('./user');
+var socketHandler = require('./socket-handler');
+var User = require('./user');
 
 var Api = {
 	timeout: 3000,
@@ -50,7 +50,7 @@ var Api = {
 			}.bind(this)
 		});
 	},
-	getPollAuth: function(dir,done,onError){
+	getPollAuth: function(dir, done, onError) {
 		var token = User.getToken();
 		var time = this.timeout;
 		$.ajax({
@@ -72,8 +72,8 @@ var Api = {
 			}.bind(this)
 		});
 	},
-	socketOn:socketHandler.socketOn,
-	socketEmit:socketHandler.emit,
+	socketOn: socketHandler.socketOn,
+	socketEmit: socketHandler.emit,
 	socketHandler: socketHandler
 };
 module.exports = Api;

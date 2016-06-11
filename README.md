@@ -2,6 +2,9 @@ Maelström - Web
 =================
 _by @demiurgosoft_
 
+[![bitHound Overall Score](https://www.bithound.io/github/demiurgosoft/maelstrom-web/badges/score.svg)](https://www.bithound.io/github/demiurgosoft/maelstrom-web)
+[![bitHound Dependencies](https://www.bithound.io/github/demiurgosoft/maelstrom-web/badges/dependencies.svg)](https://www.bithound.io/github/demiurgosoft/maelstrom-web/master/dependencies/npm)
+
 ![Maelström Logo](https://raw.githubusercontent.com/demiurgosoft/maelstrom/master/logo/logo.jpg)
 
 Maelström web server, to provide a dynamic website to interact with the game

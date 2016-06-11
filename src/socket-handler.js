@@ -1,4 +1,4 @@
-var User=require('./user');
+var User = require('./user');
 
 var socket = io.connect(URLS.world, {
 	'query': 'token=' + User.getToken()
@@ -18,19 +18,19 @@ socket.on('ship_arrive', function(msg) {
 	console.log("Ship arrive " + msg);
 });
 
-var socketAPI={
+var socketAPI = {
 	socketOn: function(eventName, cb) {
 		socket.on(eventName, cb);
 	},
-	emit: function(eventName,msg){
-		socket.emit(eventName,msg);
+	emit: function(eventName, msg) {
+		socket.emit(eventName, msg);
 	},
-	onCityUpdate: function(data){}
+	onCityUpdate: function(data) {}
 };
 
-socket.on('city-update',function(data){
+socket.on('city-update', function(data) {
 	//console.log('city_update '+JSON.stringify(data));
 	socketAPI.onCityUpdate(data);
 });
 
-module.exports=socketAPI;
+module.exports = socketAPI;

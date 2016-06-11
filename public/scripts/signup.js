@@ -6,7 +6,7 @@ $(document).ready(function() {
 		var postData = $(this).serializeArray();
 		var formURL = $(this).attr("action");
 		User.signup(postData, function(err) {
-			if(err) $('#signup-err').text(err);
+			if (err) $('#signup-err').text(err);
 			else window.location.href = '/';
 		});
 	});
