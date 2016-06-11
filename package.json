@@ -26,10 +26,10 @@
 		"ejs": "^2.4.1",
 		"express": "^4.13.4",
 		"react": "^15.0.2",
-		"react-dom": "^15.0.2"
+		"react-dom": "^15.0.2",
+        "browserify": "^13.0.0",
 	},
 	"devDependencies": {
-		"browserify": "^13.0.0",
 		"js-beautify": "^1.6.2"
 	}
 }
