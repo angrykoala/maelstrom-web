@@ -97,21 +97,24 @@ var Modal = React.createClass({
         var shipId = this.props.id || "null";
         var bodyContent;
         var remaining="";
+        var statusValue=this.state.ship.status.value;
         var alert=<p></p>;
         if(this.state.alertMsg){
             alert=this.state.alertMsg;
         }
-        if(this.state.ship.status.value==="traveling"){
+        console.log(JSON.stringify(this.state.ship.status));
+        if(statusValue==="traveling"){
+            if(this.state.ship.status.destiny) statusValue="traveling to "+this.state.ship.status.destiny;
             var t=parseInt(this.state.ship.status.remaining);
             remaining=<p>Remaining: <AutoCounter time={t} onTimeout={this.reloadShip}/></p>
         }
         if (this.state.loaded) {
             bodyContent = <div id="ship-data">
                 <p>Type: {this.state.ship.model.name}</p>
-                <p>Life: {this.state.ship.life}</p>
-                <p>Status: {this.state.ship.status.value}</p>
+                <p>Status: {statusValue}</p>
                 {remaining}
                 <p>City: {this.state.cityName}</p>
+                <p>Speed: {this.state.ship.model.speed}</p>
                 <p>Move To</p>
                 <Map.Selection url={URLS.world+"/map"} onSelection={this.moveTo}/>
                 {alert}
