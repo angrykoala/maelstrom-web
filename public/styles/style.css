@@ -34,3 +34,7 @@
 .ship-icon:active {
    box-shadow: none;
 }
+
+#mapModal .list-group-item{
+    background-color: rgba(128, 96, 0,0);   
+}

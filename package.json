@@ -1,13 +1,13 @@
 {
 	"name": "maelstrom-web",
-	"version": "0.6.2",
+	"version": "0.6.3",
 	"description": "Web client for Maelström",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "node app.js",
 		"postinstall": "npm run build",
-		"build": "browserify -t [ babelify --presets [ react ] ] src/components/*.jsx -o public/scripts/bundle.js",
+		"build": "browserify -t [ babelify --presets [ react ] ] src/components/*.jsx src/main.js -o public/scripts/bundle.js",
 		"beautify": "js-beautify --indent-with-tabs --brace-style collapse -r *.js config/*.js public/scripts/*.js src/*.js package.json"
 	},
 	"repository": {
